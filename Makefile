@@ -68,7 +68,6 @@ major:
 	git aftermerge major || exit 1
 
 clean:
-	-git checkout -f
 	-rm -rf dist
 	-rm -rf env
 
