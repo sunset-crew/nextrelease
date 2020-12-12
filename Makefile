@@ -8,8 +8,8 @@ USRLIB := /usr/local/bin
 CWD=$(shell pwd)
 install:
 ifneq ($(shell id -u),0)
-		@echo "you need to run this as roo
-		pip3 install gitrelease -i https://joes.focu.site/
+		@echo "you need to run this as root and build"
+		pip3 install dist/pyfocusd-$(VERSION).tar.gz || exit 1
 		@test -f $(USRLIB)/git-aftermerge || ( echo "something didn't install correctly, aborting" && exit 1 )
 		@test -f $(GITLIB)/git-aftermerge || ln -s $(USRLIB)/git-aftermerge $(GITLIB)/git-aftermerge
 		@echo "git-aftermerge installed"
@@ -49,7 +49,7 @@ build: test
 deploytest: build
 	python3 -m venv env
 	./env/bin/pip install wheel
-	./env/bin/pip install dist/pyfocusd-$(VERSION).tar.gz
+	./env/bin/pip install dist/gitrelease-$(VERSION).tar.gz
 	-echo "source ./env/bin/activate"
 
 deploy: build
