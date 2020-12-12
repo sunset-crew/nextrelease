@@ -6,6 +6,7 @@ env
 venv
 .pytest_cache
 # for git aftermerge
+version_updater.json
 pre_tag.sh
 post_tag.sh
 new_release.sh

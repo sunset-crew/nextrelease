@@ -3,16 +3,16 @@
 #  Git AfterMerge
 #
 
-import subprocess
 import os
+import json
 from pkg_resources import parse_version
 import sys
 import configparser
 from os.path import exists
 from os import environ
-import subprocess
-import uuid
+from .common import GitActions
 
+ga = GitActions()
 
 if len(sys.argv) != 2:
     print("you need a command")
@@ -38,77 +38,36 @@ class PoetryNotInPath(Exception):
 
 
 class PoetryVersionUpdater(object):
-    def __init__(self, increment):
-        if increment not in ["patch", "minor", "major"]:
-            raise BadIncrement("incorrect increment string\npatch,minor,major only ")
+    def __init__(self):
         if "poetry" not in environ.get("PATH"):
             raise PoetryNotInPath("Poetry bin is not, you might need to install it")
+
+    def update_poetry(self, increment):
+        if increment not in ["patch", "minor", "major"]:
+            raise BadIncrement("incorrect increment string\npatch,minor,major only ")
         code = f"""poetry version {increment}"""
-        self.msg = run_code(code)
+        self.msg = self.run_code(code)
+        print(self.msg)
+
+    def gather_info(self):
         self.config = {}
         self.config["config"] = configparser.ConfigParser()
         self.config["config"].read("pyproject.toml")
-        self.config["version"] = config["config"].get("tool.poetry", "version")
-        self.config["project"] = config["config"].get("tool.poetry", "name")
+        self.config["version"] = self.config["config"].get("tool.poetry", "version")
+        self.config["project"] = self.config["config"].get(
+            "tool.poetry", "name"
+        )  # not used yet
         self.file_changes = {}
-        if exists("./version_updater.json"):
-            with open("./version_updater.json", r) as j:
+
+        if exists(ga.version_update_file):
+            with open(ga.version_update_file, "r") as j:
                 self.file_changes = json.load(j)
         else:
             raise ChangesNotInstalled(
-                "version_updater.json not present. Please Install one"
+                f"{self.version_update_file} not present. Please Install one"
             )
-        return
 
-    def install(self):
-        self.file_changes = gen_std_file_changes()
-        with open("./version_updater.json", w) as j:
-            json.dump(j, self.file_changes)
-
-    def run_code(self, code, everything=False, script=False):
-        if script:
-            tmpfilename = "/tmp/" + str(uuid.uuid4())[:8] + ".sh"
-            code = code + "\nrm -f " + tmpfilename
-            with open(tmpfilename, "w") as f:
-                f.write(code)
-            MyOut = subprocess.Popen(
-                ["bash", tmpfilename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-            )
-        else:
-            MyOut = subprocess.Popen(
-                code, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-            )
-        stdout, stderr = MyOut.communicate()
-        if MyOut.returncode != 0:
-            print("cmd {0} return code {1}".format(" ".join(cmd), MyOut.returncode))
-        if stderr is not None:
-            print("stderr")
-            print(stderr)
-        if everything:
-            return {"out": stdout, "err": stdout, "obj": MyOut}
-        else:
-            return stdout.decode()
-
-    def gen_std_file_changes():
-        return [
-            {
-                "name": "Makefile",
-                "searchStr": "VERSION :=",
-                "formatStr": "VERSION := {0}\n",
-            },
-            {
-                "name": "tests/test_{0}.py".format(config["project"]),
-                "searchStr": "    assert __version__",
-                "formatStr": """    assert __version__ == "{0}"\n""",
-            },
-            {
-                "name": "{0}/__init__.py".format(config["project"]),
-                "searchStr": "__version__ =",
-                "formatStr": """__version__ = "{0}"\n""",
-            },
-        ]
-
-    def main(self):
+    def update_files(self):
         for fc in self.file_changes:
             if not exists(fc["name"]):
                 print(fc["name"], "does not exist")
@@ -128,97 +87,18 @@ class PoetryVersionUpdater(object):
                 with open(fc["name"], "w") as f:
                     for line in lines:
                         f.write(line)
-        print(run_code(["git", "add", ".", "--all" ""]))
-        print(run_code(["git", "commit", "-a", f"""-m"{self.msg}" """]))
+        print(ga.git(["add", ".", "--all" ""]))
+        print(ga.git(["commit", "-a", f"""-m"{self.msg}" """]))
+
+    def main(self):
+        self.update_poetry()
+        self.gather_info()
+        self.update_files()
 
 
 class AfterMerge(object):
-    def __init__(self):
-        self.tags = [x for x in self.run_cmd(["git", "tag"]).split("\n") if x]
-        self.branchs = [
-            x.strip("'")
-            for x in self.run_cmd(
-                ["git", "for-each-ref", "--format='%(refname:short)'", "refs/heads/*"]
-            ).split("\n")
-            if x
-        ]
-        self.current_name = self.run_cmd(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"]
-        ).strip()
-        self.last_merge_release = "not_set"
-
-    def get_user_info(self):
-        userhome = os.path.expanduser("~")
-        return {"user": os.path.split(userhome)[-1], "userhome": userhome}
-
-    def run_cmd(self, cmd):
-        if DEBUG:
-            print(" ".join(cmd))
-        MyOut = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        stdout, stderr = MyOut.communicate()
-        if MyOut.returncode != 0:
-            print("cmd {0} return code {1}".format(" ".join(cmd), MyOut.returncode))
-        if stderr is not None:
-            print("stderr")
-            print(stderr)
-        return stdout.decode()
-
-    def get_last_merged_release(self):
-        self.run_cmd(["git", "checkout", "master"])
-        self.run_cmd(["git", "pull"])
-        branch = ""
-        o = self.run_cmd(["git", "log"]).strip()
-        lines = [x.strip() for x in o.split("\n") if x.strip()]
-        looping = True
-        while looping:
-            line = lines.pop(0)
-            if line[:12] == "Merge branch":
-                branch = line.split(" ")[2].strip("'")
-                print(branch)
-                looping = False
-        try:
-            return branch.split("_")[1]
-        except IndexError:
-            raise
-
-    def grab_and_commit_last_release_tag(self):
-        try:
-            self.last_merge_release = self.get_last_merged_release()
-        except IndexError:
-            raise DirtyMasterBranch("dirty master branch")
-        print(self.last_merge_release)
-        if self.last_merge_release == "not_set":
-            print("something wrong with repo")
-            sys.exit(1)
-        if self.last_merge_release not in self.tags:
-            if os.path.exists("./pre_tag.sh"):
-                print(
-                    self.run_cmd(
-                        ["bash", "pre_tag.sh", sys.argv[1], self.last_merge_release]
-                    )
-                )
-            self.run_cmd(
-                [
-                    "git",
-                    "tag",
-                    "-a",
-                    self.last_merge_release,
-                    "-m'new release {0}'".format(self.last_merge_release),
-                ]
-            )
-            self.run_cmd(["git", "push", "--tags"])
-            if os.path.exists("./post_tag.sh"):
-                print(
-                    self.run_cmd(
-                        ["bash", "post_tag.sh", sys.argv[1], self.last_merge_release]
-                    )
-                )
-        else:
-            print("tag already exists, check the merge")
-            sys.exit(1)
-
-    def determine_next_version(self):
-        pv = parse_version(self.last_merge_release)
+    def determine_next_version(self, last_merge_release):
+        pv = parse_version(last_merge_release)
         p = [int(x) for x in pv.base_version.split(".")]
         if sys.argv[1] in ["major", "mj"]:
             # major
@@ -237,22 +117,12 @@ class AfterMerge(object):
         self.branch = "release_{0}".format(self.release)
 
     def main(self):
-        self.grab_and_commit_last_release_tag()
-        self.determine_next_version()
-        output = self.run_cmd(["git", "checkout", "master"])
-        output += self.run_cmd(["git", "pull"])
-        output += self.run_cmd(["git", "fetch", "-p"])
-        output += self.run_cmd(
-            ["git", "branch", "-D", "release_{0}".format(self.last_merge_release)]
-        )
-        output += self.run_cmd(["git", "checkout", "-b", self.branch])
-        pvu = PoetryVersionUpdater()
-        pvu.main()
-        if os.path.exists("./new_release.sh"):
-            print(
-                self.run_cmd(
-                    ["bash", "new_release.sh", sys.argv[1], self.last_merge_release]
-                )
-            )
-        output += self.run_cmd(["git", "push", "--set-upstream", "origin", self.branch])
-        print(output)
+        last_merged_release = ga.get_last_merged_release()
+        ga.tag_last_release_and_push(last_merged_release)
+        next_release = self.determine_next_version(last_merged_release)
+        ga.create_new_branch(next_release)
+        ga.git(["branch", "-D", "release_{0}".format(last_merged_release)])
+        if os.path.exists(ga.version_update_file):
+            pvu = PoetryVersionUpdater()
+            pvu.main()
+        print(ga.git(["push", "--set-upstream", "origin", self.branch]))

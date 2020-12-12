@@ -1,6 +1,8 @@
 from .aftermerge import AfterMerge
 from .nextrelease import NextRelease
-import sys 
+import sys
+
+
 def git_aftermerge():
     am = AfterMerge()
     am.main()
