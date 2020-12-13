@@ -14,10 +14,6 @@ from .common import GitActions
 
 ga = GitActions()
 
-if len(sys.argv) != 2:
-    print("you need a command")
-    sys.exit(1)
-
 DEBUG = False
 
 
@@ -45,8 +41,7 @@ class PoetryVersionUpdater(object):
     def update_poetry(self, increment):
         if increment not in ["patch", "minor", "major"]:
             raise BadIncrement("incorrect increment string\npatch,minor,major only ")
-        code = f"""poetry version {increment}"""
-        self.msg = self.run_code(code)
+        self.msg = ga.run_code(["poetry", "version", increment])
         print(self.msg)
 
     def gather_info(self):
@@ -91,12 +86,14 @@ class PoetryVersionUpdater(object):
         print(ga.git(["commit", "-a", f"""-m"{self.msg}" """]))
 
     def main(self):
-        self.update_poetry()
         self.gather_info()
         self.update_files()
 
 
 class AfterMerge(object):
+    def __init__(self):
+        ga.gather_git_info()
+
     def determine_next_version(self, last_merge_release):
         pv = parse_version(last_merge_release)
         p = [int(x) for x in pv.base_version.split(".")]
@@ -112,17 +109,20 @@ class AfterMerge(object):
         # patch
         else:
             p[2] = p[2] + 1
+
         self.version = "{0}.{1}.{2}".format(p[0], p[1], p[2])
         self.release = "v{0}".format(self.version)
         self.branch = "release_{0}".format(self.release)
 
     def main(self):
-        last_merged_release = ga.get_last_merged_release()
+        last_merged_release = ga.find_last_merged_release()
+        print(last_merged_release)
         ga.tag_last_release_and_push(last_merged_release)
-        next_release = self.determine_next_version(last_merged_release)
-        ga.create_new_branch(next_release)
+        self.determine_next_version(last_merged_release)
+        ga.create_new_branch(self.branch)
         ga.git(["branch", "-D", "release_{0}".format(last_merged_release)])
         if os.path.exists(ga.version_update_file):
             pvu = PoetryVersionUpdater()
+            pvu.update_poetry(sys.argv[1])
             pvu.main()
         print(ga.git(["push", "--set-upstream", "origin", self.branch]))

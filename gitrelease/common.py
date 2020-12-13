@@ -23,6 +23,7 @@ class CommonFunctions(DefaultValues):
                 ["bash", tmpfilename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
         else:
+            print(code)
             MyOut = subprocess.Popen(
                 code, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
@@ -65,18 +66,18 @@ class CommonFunctions(DefaultValues):
             {
                 "name": "tests/test_{0}.py".format(self.project),
                 "searchStr": "    assert __version__",
-                "formatStr": """    assert __version__ == "{0}"\n""",
+                "formatStr": "    assert __version__ == {0}\n",
             },
             {
                 "name": "{0}/__init__.py".format(self.project),
                 "searchStr": "__version__ =",
-                "formatStr": """__version__ = "{0}"\n""",
+                "formatStr": "__version__ = {0}\n",
             },
         ]
 
 
 class GitActions(CommonFunctions):
-    def __init__(self):
+    def gather_git_info(self):
         self.git(
             ["checkout", "master"]
         )  # use everything to determine if this checkout worked.
@@ -91,10 +92,11 @@ class GitActions(CommonFunctions):
         ]
         self.current_name = self.git(["rev-parse", "--abbrev-ref", "HEAD"]).strip()
 
-    def get_last_merged_release(self):
+    def find_last_merged_release(self):
         branch = ""
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
+        print(lines)
         looping = True
         while looping:
             line = lines.pop(0)
