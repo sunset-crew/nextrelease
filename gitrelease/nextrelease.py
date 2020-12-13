@@ -27,10 +27,12 @@ class PoetryInstallVersionUpdater(object):
         self.file_changes = []
 
 
-class NextRelease:
+class NextRelease(object):
     def __init__(self, release):
+        ga.gather_git_info()
         # self.release = "v{0}.{1}.{2}".format(major,minor,patch)
         self.branch = "release_{0}".format(release)
 
     def main(self):
         ga.create_new_branch(self.branch)
+        ga.git(["push", "--set-upstream", "origin", self.branch])
