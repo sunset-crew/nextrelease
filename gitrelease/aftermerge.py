@@ -7,7 +7,6 @@ import os
 import json
 from pkg_resources import parse_version
 import sys
-import configparser
 from os.path import exists
 from os import environ
 from .common import GitActions
@@ -45,13 +44,7 @@ class PoetryVersionUpdater(object):
         print(self.msg)
 
     def gather_info(self):
-        self.config = {}
-        self.config["config"] = configparser.ConfigParser()
-        self.config["config"].read("pyproject.toml")
-        self.config["version"] = self.config["config"].get("tool.poetry", "version")
-        self.config["project"] = self.config["config"].get(
-            "tool.poetry", "name"
-        )  # not used yet
+        self.config = ga.get_project_info()
         self.file_changes = {}
 
         if exists(ga.version_update_file):

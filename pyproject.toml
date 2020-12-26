@@ -13,6 +13,7 @@ pytest = "^5.2"
 [tool.poetry.scripts]
 git-aftermerge = "gitrelease.cmds:git_aftermerge"
 git-nextrelease = "gitrelease.cmds:git_nextrelease"
+git-versionupdater = "gitrelease.cmds:git_versionupdater"
 
 [[tool.poetry.source]]
 name = "focus"
