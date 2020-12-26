@@ -41,7 +41,7 @@ class PoetryVersionUpdater(object):
         if increment not in ["patch", "minor", "major"]:
             raise BadIncrement("incorrect increment string\npatch,minor,major only ")
         self.msg = ga.run_code(["poetry", "version", increment])
-        print(self.msg)
+        print(self.msg, end="")
 
     def gather_info(self):
         self.config = ga.get_project_info()
@@ -75,8 +75,8 @@ class PoetryVersionUpdater(object):
                 with open(fc["name"], "w") as f:
                     for line in lines:
                         f.write(line)
-        print(ga.git(["add", ".", "--all" ""]))
-        print(ga.git(["commit", "-a", f"""-m"{self.msg}" """]))
+        print(ga.git(["add", ".", "--all" ""]), end="")
+        print(ga.git(["commit", "-a", f"""-m"{self.msg}" """]), end="")
 
     def main(self):
         self.gather_info()
@@ -118,4 +118,4 @@ class AfterMerge(object):
             pvu = PoetryVersionUpdater()
             pvu.update_poetry(sys.argv[1])
             pvu.main()
-        print(ga.git(["push", "--set-upstream", "origin", self.branch]))
+        print(ga.git(["push", "--set-upstream", "origin", self.branch]), end="")
