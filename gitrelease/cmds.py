@@ -89,5 +89,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
         new_file = cla.new_change_log(header, entry)
         with open("CHANGELOG.md", "w") as f:
             f.write(new_file)
+        cla.run_cmd(["git", "add", "."])
+        commit_cmd = ["git", "commit", "-a", """-m"{0}" """.format(entry)]
+        print(" ".join(commit_cmd))
+        cla.run_cmd(commit_cmd)
         return
     print("No changelog here, run install")

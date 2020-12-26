@@ -154,15 +154,15 @@ class GitActions(CommonFunctions):
             line = lines.pop(0)
             if line[:12] == "Merge branch":
                 branch = line.split(" ")[2].strip("'")
-                print(branch)
                 looping = False
+        print(branch)
         try:
             return branch.split("_")[1]
         except IndexError:
             raise
 
     def tag_last_release_and_push(self, last_merged_release):
-        print(last_merged_release)
+        # print(last_merged_release)
         if last_merged_release == "not_set":
             print("something wrong with repo")
             sys.exit(1)
@@ -187,14 +187,15 @@ class GitActions(CommonFunctions):
                 print(
                     self.run_code(
                         ["bash", "post_tag.sh", sys.argv[1], last_merged_release]
-                    )
+                    ),
+                    end="",
                 )
         else:
             print("tag already exists, check the merge")
             sys.exit(1)
 
     def create_new_branch(self, branch):
-        print(self.git(["checkout", "master"]))
-        print(self.git(["pull"]))
-        print(self.git(["fetch", "-p"]))
-        print(self.git(["checkout", "-b", branch]))
+        print(self.git(["checkout", "master"]), end="")
+        print(self.git(["pull"]), end="")
+        print(self.git(["fetch", "-p"]), end="")
+        print(self.git(["checkout", "-b", branch]), end="")
