@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.1.5] - 2020-12-26
+### Added
+- adds formating to improve commit msg history
+
 ## [0.1.4] - 2020-12-26
 ### Added
 - adds automated git commit with changelog
