@@ -148,7 +148,7 @@ class GitActions(CommonFunctions):
         branch = ""
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
-        print(lines)
+        # print(lines)
         looping = True
         while looping:
             line = lines.pop(0)
