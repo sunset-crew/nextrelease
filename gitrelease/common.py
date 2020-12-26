@@ -3,6 +3,7 @@ import uuid
 import os
 import json
 import sys
+import configparser
 
 
 class DefaultValues(object):
@@ -23,7 +24,8 @@ class CommonFunctions(DefaultValues):
                 ["bash", tmpfilename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
         else:
-            print(code)
+            if verbose:
+                print(code)
             MyOut = subprocess.Popen(
                 code, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
@@ -48,13 +50,63 @@ class CommonFunctions(DefaultValues):
         userhome = os.path.expanduser("~")
         return {"user": os.path.split(userhome)[-1], "userhome": userhome}
 
-    def install(self):
-        self.file_changes = self.gen_std_file_changes()
-        with open(self.version_update_file, "w") as j:
-            json.dump(j, self.file_changes)
+    def get_project_info(self):
+        config = {}
+        config["config"] = configparser.ConfigParser()
+        config["config"].read("pyproject.toml")
+        config["version"] = (
+            config["config"].get("tool.poetry", "version").replace('"', "")
+        )
+        config["project"] = config["config"].get("tool.poetry", "name").replace('"', "")
+        return config
 
-    def set_project(self, project):
-        self.project = project
+
+class VersionUpdaterActions(CommonFunctions):
+    def __init__(self):
+        self.config = self.get_project_info()
+
+    def uninstall(self):
+        if os.path.exists(self.version_update_file):
+            os.remove(self.version_update_file)
+            print("version_updater.json removed")
+            return
+        print("version_updater.json not found")
+
+    def install(self):
+        if os.path.exists(".git"):
+            self.basic_makefile()
+            newfile = self.gen_std_file_changes()
+            with open(self.version_update_file, "w") as j:
+                json.dump(newfile, j)
+            print("installed")
+            return
+        print("not the root of the repository")
+
+    def basic_makefile(self):
+        contents = """VERSION := {0}
+
+clean:
+{1}-rm -rf dist
+{1}-rm -rf env
+
+patch:
+{1}git aftermerge patch || exit 1
+
+minor:
+{1}git aftermerge minor || exit 1
+
+major:
+{1}git aftermerge major || exit 1
+
+""".format(
+            self.config["version"], "	"
+        )
+        if os.path.exists("Makefile"):
+            return "Already exists"
+
+        with open("Makefile", "w") as f:
+            f.write(contents)
+        return "created Makefile"
 
     def gen_std_file_changes(self):
         return [
@@ -64,14 +116,14 @@ class CommonFunctions(DefaultValues):
                 "formatStr": "VERSION := {0}\n",
             },
             {
-                "name": "tests/test_{0}.py".format(self.project),
+                "name": "tests/test_{0}.py".format(self.config["project"]),
                 "searchStr": "    assert __version__",
-                "formatStr": "    assert __version__ == {0}\n",
+                "formatStr": '    assert __version__ == "{0}"\n',
             },
             {
-                "name": "{0}/__init__.py".format(self.project),
+                "name": "{0}/__init__.py".format(self.config["project"]),
                 "searchStr": "__version__ =",
-                "formatStr": "__version__ = {0}\n",
+                "formatStr": '__version__ = "{0}"\n',
             },
         ]
 
