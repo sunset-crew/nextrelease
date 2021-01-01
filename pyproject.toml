@@ -6,6 +6,8 @@ authors = ["Joe <joe@sunset-crew.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+Sphinx = "^3.4.1"
+recommonmark = "^0.7.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

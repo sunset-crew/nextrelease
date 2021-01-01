@@ -13,3 +13,5 @@ new_release.sh
 # testing a debug env
 etc
 var
+# docs 
+docs/_build
