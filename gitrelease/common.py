@@ -80,6 +80,17 @@ class VersionUpdaterActions(CommonFunctions):
                 json.dump(newfile, j)
             print("installed")
             return
+        if os.path.exists(".gitignore"):
+            ignorelist = []
+            with open(".gitignore", "r") as f:
+                ignorelist = f.readlines()
+            if self.version_update_file not in ignorelist:
+                ignorelist.append(self.version_update_file + "\n")
+            try:
+                with open(".gitignore", "w") as f:
+                    f.write("".join(ignorelist))
+            except Exception:
+                print("no access to .gitignore")
         print("not the root of the repository")
 
     def basic_makefile(self):
