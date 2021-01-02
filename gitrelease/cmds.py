@@ -52,7 +52,7 @@ def git_changelog():
         sys.exit(1)
     if sys.argv[1].lower() in ["a", "added", "adds"]:
         header = "Added"
-    if sys.argv[1].lower() in ["c", "changed", "changes"]:
+    if sys.argv[1].lower() in ["c", "changed", "changes", "fixes"]:
         header = "Changed"
     if sys.argv[1].lower() in ["r", "removed", "removes"]:
         header = "Removed"

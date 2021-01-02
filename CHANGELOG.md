@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - adds fix for extra quotes in the bump title
 - adds fixes for run_update system
+- adds fixes to the list of things i can start with
 
 ### Changed
 - changes cli logic
