@@ -1,14 +1,19 @@
 [tool.poetry]
 name = "gitrelease"
-version = "0.1.6"
+version = "0.1.7"
 description = ""
 authors = ["Joe <joe@sunset-crew.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+flake8 = "^3.8.4"
+black = "^20.8b1"
+sphinx = "^3.4.1"
+recommonmark = "^0.7.1"
+pytest = "^6.2.1"
+
 
 [tool.poetry.scripts]
 git-aftermerge = "gitrelease.cmds:git_aftermerge"

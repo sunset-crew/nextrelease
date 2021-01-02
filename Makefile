@@ -3,10 +3,10 @@ ifneq (,$(wildcard /etc/redhat-release))
 else
     GITLIB := /usr/lib/git-core
 endif
-VERSION := 0.1.6
+VERSION := 0.1.7
 USRLIB := /usr/local/bin
 CWD=$(shell pwd)
-install: build
+install:
 ifneq ($(shell id -u),0)
 		@echo "you need to run this as root and build"
 		pip3 install dist/pyfocusd-$(VERSION).tar.gz || exit 1
