@@ -13,6 +13,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Removed
 - removes code that ties builds to install in root makefile
 
+### Changed
+- changes python version to work on centos
+
 ## [0.1.6] - 2020-12-31
 ### Added
 - adds .gitignore update to version updater
