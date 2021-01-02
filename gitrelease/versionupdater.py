@@ -38,6 +38,10 @@ class PoetryVersionUpdater(VersionUpdaterActions):
                 raise BadIncrement(
                     "incorrect increment string\npatch,minor,major only "
                 )
+        if len(sys.argv) == 2 and sys.argv[1] in ["patch", "minor", "major"]:
+            self.increment = sys.argv[1]
+            print(sys.argv)
+
         super().__init__()
         if "poetry" not in environ.get("PATH"):
             raise PoetryNotInPath("Poetry bin is not, you might need to install it")

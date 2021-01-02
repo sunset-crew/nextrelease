@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - changes cli logic
 - changes fixes increment error
+- fixes possible install issue
 
 ## [0.1.7] - 2021-01-02
 ### Added
