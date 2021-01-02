@@ -31,7 +31,7 @@ class PoetryNotInPath(Exception):
 
 
 class PoetryVersionUpdater(VersionUpdaterActions):
-    def __init__(self, increment):
+    def __init__(self):
         if len(sys.argv) == 3 and sys.argv[1] == "run":
             self.increment = sys.argv[2]
             if self.increment not in ["patch", "minor", "major"]:
