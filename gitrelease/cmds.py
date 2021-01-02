@@ -1,7 +1,7 @@
 from .aftermerge import AfterMerge
 from .nextrelease import NextRelease
 from .changelog import ChangeLogActions
-from .common import VersionUpdaterActions
+from .versionupdater import PoetryVersionUpdater
 import sys
 import os
 
@@ -32,10 +32,11 @@ def git_versionupdater():
     else:
         print("install,uninstall")
         return
-    verupact = VersionUpdaterActions()
+    poetverup = PoetryVersionUpdater()
     actions = {
-        "install": verupact.install,
-        "uninstall": verupact.uninstall,
+        "install": poetverup.install,
+        "uninstall": poetverup.uninstall,
+        "run": poetverup.run_update,
     }
     actions[cmd]()
     # print("version updater")
