@@ -27,10 +27,10 @@ def git_nextrelease():
 
 
 def git_versionupdater():
-    if len(sys.argv) == 2:
+    if len(sys.argv) >= 2 and len(sys.argv) < 4:
         cmd = sys.argv[1]
     else:
-        print("install,uninstall")
+        print("install,uninstall,run")
         return
     poetverup = PoetryVersionUpdater()
     actions = {
@@ -39,7 +39,7 @@ def git_versionupdater():
         "run": poetverup.run_update,
     }
     actions[cmd]()
-    
+
     # print("version updater")
 
 

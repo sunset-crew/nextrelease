@@ -8,6 +8,7 @@ from os.path import exists
 from os import environ
 from .common import GitActions, VersionUpdaterActions
 import sys
+
 ga = GitActions()
 
 DEBUG = False
@@ -30,11 +31,13 @@ class PoetryNotInPath(Exception):
 
 
 class PoetryVersionUpdater(VersionUpdaterActions):
-    def __init__(self,increment):
+    def __init__(self, increment):
         if len(sys.argv) == 3 and sys.argv[1] == "run":
-          self.increment = sys.argv[2]
-          if self.increment not in ["patch", "minor", "major"]:
-              raise BadIncrement("incorrect increment string\npatch,minor,major only ")
+            self.increment = sys.argv[2]
+            if self.increment not in ["patch", "minor", "major"]:
+                raise BadIncrement(
+                    "incorrect increment string\npatch,minor,major only "
+                )
         super().__init__()
         if "poetry" not in environ.get("PATH"):
             raise PoetryNotInPath("Poetry bin is not, you might need to install it")

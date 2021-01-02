@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - adds fix for extra quotes in the bump title
 - adds fixes for run_update system
 
+### Changed
+- changes cli logic
+
 ## [0.1.7] - 2021-01-02
 ### Added
 - adds sphinx documentation to the project
