@@ -39,6 +39,7 @@ def git_versionupdater():
         "run": poetverup.run_update,
     }
     actions[cmd]()
+    
     # print("version updater")
 
 

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.1.8] - 2021-01-02
 ### Added
 - adds fix for extra quotes in the bump title
+- adds fixes for run_update system
 
 ## [0.1.7] - 2021-01-02
 ### Added
