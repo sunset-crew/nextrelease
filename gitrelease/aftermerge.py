@@ -46,6 +46,6 @@ class AfterMerge(object):
         ga.create_new_branch(self.branch)
         ga.git(["branch", "-D", "release_{0}".format(last_merged_release)])
         if os.path.exists(ga.version_update_file):
-            pvu = PoetryVersionUpdater(sys.argv[1])
+            pvu = PoetryVersionUpdater()
             pvu.run_update()
         print(ga.git(["push", "--set-upstream", "origin", self.branch]), end="")
