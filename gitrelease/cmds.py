@@ -1,7 +1,7 @@
 from .aftermerge import AfterMerge
 from .nextrelease import NextRelease
 from .changelog import ChangeLogActions
-from .common import VersionUpdaterActions
+from .versionupdater import PoetryVersionUpdater
 import sys
 import os
 
@@ -27,17 +27,19 @@ def git_nextrelease():
 
 
 def git_versionupdater():
-    if len(sys.argv) == 2:
+    if len(sys.argv) >= 2 and len(sys.argv) < 4:
         cmd = sys.argv[1]
     else:
-        print("install,uninstall")
+        print("install,uninstall,run")
         return
-    verupact = VersionUpdaterActions()
+    poetverup = PoetryVersionUpdater()
     actions = {
-        "install": verupact.install,
-        "uninstall": verupact.uninstall,
+        "install": poetverup.install,
+        "uninstall": poetverup.uninstall,
+        "run": poetverup.run_update,
     }
     actions[cmd]()
+
     # print("version updater")
 
 
@@ -50,7 +52,7 @@ def git_changelog():
         sys.exit(1)
     if sys.argv[1].lower() in ["a", "added", "adds"]:
         header = "Added"
-    if sys.argv[1].lower() in ["c", "changed", "changes"]:
+    if sys.argv[1].lower() in ["c", "changed", "changes", "fixes"]:
         header = "Changed"
     if sys.argv[1].lower() in ["r", "removed", "removes"]:
         header = "Removed"

@@ -3,7 +3,7 @@ ifneq (,$(wildcard /etc/redhat-release))
 else
     GITLIB := /usr/lib/git-core
 endif
-VERSION := 0.1.7
+VERSION := 0.1.8
 USRLIB := /usr/local/bin
 CWD=$(shell pwd)
 install:

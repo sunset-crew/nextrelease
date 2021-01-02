@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.1.8] - 2021-01-02
+### Added
+- adds fix for extra quotes in the bump title
+- adds fixes for run_update system
+- adds fixes to the list of things i can start with
+
+### Changed
+- changes cli logic
+- changes fixes increment error
+- fixes possible install issue
+
 ## [0.1.7] - 2021-01-02
 ### Added
 - adds sphinx documentation to the project
