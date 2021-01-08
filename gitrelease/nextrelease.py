@@ -6,8 +6,6 @@ from os.path import exists
 from os import environ
 from .common import GitActions
 
-ga = GitActions()
-
 
 class PoetryNotInPath(Exception):
     pass
@@ -28,11 +26,14 @@ class PoetryInstallVersionUpdater(object):
 
 
 class NextRelease(object):
-    def __init__(self, release):
-        ga.gather_git_info()
+    def __init__(self, args):
+        self.args = args
+        self.ga = GitActions(self.args)
+        self.ga.gather_git_info()
         # self.release = "v{0}.{1}.{2}".format(major,minor,patch)
-        self.branch = "release_{0}".format(release)
+        self.branch = "release_{0}".format(self.args.release)
 
     def main(self):
-        ga.create_new_branch(self.branch)
-        ga.git(["push", "--set-upstream", "origin", self.branch])
+        self.ga.create_new_branch(self.branch)
+        if self.args.no_remote:
+            self.ga.git(["push", "--set-upstream", "origin", self.branch])

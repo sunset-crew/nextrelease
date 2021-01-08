@@ -62,8 +62,9 @@ class CommonFunctions(DefaultValues):
 
 
 class VersionUpdaterActions(CommonFunctions):
-    def __init__(self):
+    def __init__(self, args):
         self.config = self.get_project_info()
+        self.args = args
 
     def uninstall(self):
         if os.path.exists(self.version_update_file):
@@ -140,11 +141,15 @@ major:
 
 
 class GitActions(CommonFunctions):
+    def __init__(self, args):
+        self.args = args
+
     def gather_git_info(self):
         self.git(
             ["checkout", "master"]
         )  # use everything to determine if this checkout worked.
-        self.git(["pull"])
+        if self.args.no_remote:
+            self.git(["pull"])
         self.tags = [x for x in self.git(["tag"]).split("\n") if x]
         self.branches = [
             x.strip("'")
@@ -159,7 +164,6 @@ class GitActions(CommonFunctions):
         branch = ""
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
-        # print(lines)
         looping = True
         while looping:
             line = lines.pop(0)
@@ -182,7 +186,7 @@ class GitActions(CommonFunctions):
             if os.path.exists("./pre_tag.sh"):
                 print(
                     self.run_code(
-                        ["bash", "pre_tag.sh", sys.argv[1], last_merged_release]
+                        ["bash", "pre_tag.sh", self.args.action, last_merged_release]
                     )
                 )
             self.git(
@@ -193,11 +197,12 @@ class GitActions(CommonFunctions):
                     "-m'new release {0}'".format(last_merged_release),
                 ]
             )
-            self.git(["push", "--tags"])
+            if self.args.no_remote:
+                self.git(["push", "--tags"])
             if os.path.exists("./post_tag.sh"):
                 print(
                     self.run_code(
-                        ["bash", "post_tag.sh", sys.argv[1], last_merged_release]
+                        ["bash", "post_tag.sh", self.args.action, last_merged_release]
                     ),
                     end="",
                 )
@@ -207,6 +212,7 @@ class GitActions(CommonFunctions):
 
     def create_new_branch(self, branch):
         print(self.git(["checkout", "master"]), end="")
-        print(self.git(["pull"]), end="")
-        print(self.git(["fetch", "-p"]), end="")
+        if self.args.no_remote:
+            print(self.git(["pull"]), end="")
+            print(self.git(["fetch", "-p"]), end="")
         print(self.git(["checkout", "-b", branch]), end="")
