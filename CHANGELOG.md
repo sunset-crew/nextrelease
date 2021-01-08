@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.2.0] - 2021-01-08
+### Added
+- adds release notes for the basics
+
 ## [0.1.11] - 2021-01-08
 ### Added
 - adds testrepo scriopt so thta i can test the repo and junk
