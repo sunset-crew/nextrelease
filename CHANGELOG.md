@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.1.11] - 2021-01-08
+### Added
+- adds testrepo scriopt so thta i can test the repo and junk
+
 ## [0.1.10] - 2021-01-07
 ### Added
 - adds no-remotes option to remove push, fetch and pull from running

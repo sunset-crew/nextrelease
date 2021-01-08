@@ -166,10 +166,10 @@ class GitActions(CommonFunctions):
         lines = [x.strip() for x in o.split("\n") if x.strip()]
         looping = True
         while looping:
-            line = lines.pop(0)
             if line[:12] == "Merge branch":
                 branch = line.split(" ")[2].strip("'")
                 looping = False
+            line = lines.pop(0)
         print(branch)
         try:
             return branch.split("_")[1]

@@ -11,7 +11,6 @@ from .versionupdater import PoetryVersionUpdater
 
 DEBUG = False
 
-
 class AfterMerge(object):
     def __init__(self, args):
         self.ga = GitActions(args)
