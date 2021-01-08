@@ -9,14 +9,14 @@ import sys
 from .common import GitActions
 from .versionupdater import PoetryVersionUpdater
 
-ga = GitActions()
-
 DEBUG = False
 
 
 class AfterMerge(object):
-    def __init__(self):
-        ga.gather_git_info()
+    def __init__(self, args):
+        self.ga = GitActions(args)
+        self.ga.gather_git_info()
+        self.args = args
 
     def determine_next_version(self, last_merge_release):
         pv = parse_version(last_merge_release)
@@ -39,13 +39,16 @@ class AfterMerge(object):
         self.branch = "release_{0}".format(self.release)
 
     def main(self):
-        last_merged_release = ga.find_last_merged_release()
+        last_merged_release = self.ga.find_last_merged_release()
         print(last_merged_release)
-        ga.tag_last_release_and_push(last_merged_release)
+        self.ga.tag_last_release_and_push(last_merged_release)
         self.determine_next_version(last_merged_release)
-        ga.create_new_branch(self.branch)
-        ga.git(["branch", "-D", "release_{0}".format(last_merged_release)])
-        if os.path.exists(ga.version_update_file):
-            pvu = PoetryVersionUpdater()
+        self.ga.create_new_branch(self.branch)
+        self.ga.git(["branch", "-D", "release_{0}".format(last_merged_release)])
+        if os.path.exists(self.ga.version_update_file):
+            pvu = PoetryVersionUpdater(self.args)
             pvu.run_update()
-        print(ga.git(["push", "--set-upstream", "origin", self.branch]), end="")
+        if self.args.no_remote:
+            print(
+                self.ga.git(["push", "--set-upstream", "origin", self.branch]), end=""
+            )

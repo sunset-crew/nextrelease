@@ -4,41 +4,46 @@ from .changelog import ChangeLogActions
 from .versionupdater import PoetryVersionUpdater
 import sys
 import os
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--no-remote", action="store_false", help="Dont use the remote based commands"
+)
 
 
 def git_aftermerge():
-    if len(sys.argv) != 2:
-        print("this requires ['patch','minor','major']")
-        sys.exit(1)
-    am = AfterMerge()
+    # subparser = parser.add_subparsers(dest="action")
+    parser.add_argument("increment", help="this requires ['patch','minor','major']")
+    args = parser.parse_args()
+    am = AfterMerge(args)
     am.main()
     sys.exit(0)
     # print("after merge")
 
 
 def git_nextrelease():
-    if len(sys.argv) == 2:
-        release = sys.argv[1]
-    else:
-        release = "v0.1.0"
-    nr = NextRelease(release)
+    parser.add_argument("release", default="v0.1.0", help="You need the v")
+    args = parser.parse_args()
+    nr = NextRelease(args)
     nr.main()
     # print("next release")
 
 
 def git_versionupdater():
-    if len(sys.argv) >= 2 and len(sys.argv) < 4:
-        cmd = sys.argv[1]
-    else:
-        print("install,uninstall,run")
-        return
-    poetverup = PoetryVersionUpdater()
+    subparser = parser.add_subparsers(dest="action")
+    subparser.add_parser("install", help="Install Version Updater")
+    subparser.add_parser("uninstall", help="Uninstall Version Updater")
+    run = subparser.add_parser("run", help="Run an Update, type")
+    run.add_argument("increment", help="patch, minor, major")
+    args = parser.parse_args()
+    poetverup = PoetryVersionUpdater(args)
     actions = {
         "install": poetverup.install,
         "uninstall": poetverup.uninstall,
         "run": poetverup.run_update,
     }
-    actions[cmd]()
+    actions[args.action]()
 
     # print("version updater")
 
