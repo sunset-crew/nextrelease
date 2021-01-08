@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.1.11] - 2021-01-08
 ### Added
 - adds testrepo scriopt so thta i can test the repo and junk
+- adds better testing script that cleans up after itself
 
 ## [0.1.10] - 2021-01-07
 ### Added

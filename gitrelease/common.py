@@ -165,6 +165,7 @@ class GitActions(CommonFunctions):
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
         looping = True
+        line = lines.pop(0)
         while looping:
             if line[:12] == "Merge branch":
                 branch = line.split(" ")[2].strip("'")

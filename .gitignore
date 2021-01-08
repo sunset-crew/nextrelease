@@ -14,5 +14,5 @@ new_release.sh
 etc
 var
 # docs 
-tests/testrepo
+tests/testrepo*
 docs/_build

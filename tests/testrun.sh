@@ -37,11 +37,14 @@ git nextrelease v0.1.0 --no-remote
 git versionupdater install
 git changelog install
 git changelog adds versioninstaller and changelog
-echo "new_file" > newfile.py
-git changelog adds newfile.py
+echo "new_file=1" > newfile.sh
+git changelog adds newfile.sh
 git checkout master
 git merge release_v0.1.0 --commit
-echo "new_filed" > newfile.py
+echo "new_file=2" > newfile.sh
 git add . 
 git commit -a -m"Merge branch 'release_v0.1.0' into 'master'"
 git aftermerge patch --no-remote
+cd .. 
+[ -d "${APPNAME}" ] && rm -rf ${APPNAME}
+
