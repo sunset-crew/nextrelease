@@ -23,7 +23,9 @@ def git_aftermerge():
 
 
 def git_nextrelease():
-    parser.add_argument("release", default="v0.1.0", help="You need the v")
+    parser.add_argument(
+        "--release", default="v0.1.0", help="You need the v, Default=v0.1.0"
+    )
     args = parser.parse_args()
     nr = NextRelease(args)
     nr.main()

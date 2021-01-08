@@ -33,7 +33,7 @@ pyproject_file
 git init
 git add . 
 git commit -a -m"initial commit"
-git nextrelease v0.1.0 --no-remote
+git nextrelease --no-remote
 git versionupdater install
 git changelog install
 git changelog adds versioninstaller and changelog
@@ -47,4 +47,3 @@ git commit -a -m"Merge branch 'release_v0.1.0' into 'master'"
 git aftermerge patch --no-remote
 cd .. 
 [ -d "${APPNAME}" ] && rm -rf ${APPNAME}
-
