@@ -187,7 +187,7 @@ class GitActions(CommonFunctions):
             if os.path.exists("./pre_tag.sh"):
                 print(
                     self.run_code(
-                        ["bash", "pre_tag.sh", self.args.action, last_merged_release]
+                        ["bash", "pre_tag.sh", "aftermerge", last_merged_release]
                     )
                 )
             self.git(
@@ -203,7 +203,7 @@ class GitActions(CommonFunctions):
             if os.path.exists("./post_tag.sh"):
                 print(
                     self.run_code(
-                        ["bash", "post_tag.sh", self.args.action, last_merged_release]
+                        ["bash", "post_tag.sh", "aftermerge", last_merged_release]
                     ),
                     end="",
                 )
