@@ -167,7 +167,10 @@ class GitActions(CommonFunctions):
         looping = True
         line = lines.pop(0)
         while looping:
-            if line[:12] == "Merge branch":
+            if line[:10] in ["Merge pull"]:
+                branch = line.split("/")[1]
+                looping = False
+            if line[:12] in ["Merge branch"]:
                 branch = line.split(" ")[2].strip("'")
                 looping = False
             line = lines.pop(0)
