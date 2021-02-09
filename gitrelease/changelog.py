@@ -9,15 +9,8 @@ class ChangeLogActions(object):
         if not os.path.exists(".git"):
             print("this isn't a repo, no control of versioning")
             sys.exit(1)
-        self.current_branch = self.run_cmd(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"]
-        ).strip()
-        if self.current_branch[:7] != "release":
-            print(
-                "This needs to be on the latest Release Branch before you add to Changelog"
-            )
-            sys.exit(1)
-        # sys.exit(1)
+
+        self.current_branch = self.get_current_release_branch()
         self.filelocation = filelocation
         self.userhome = os.path.expanduser("~")
         self.username = os.path.split(self.userhome)[-1]
@@ -53,6 +46,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
         else:
             return stdout.decode()
 
+    def get_current_release_branch(self):
+        if not os.path.exists(".git"):
+            print("this isn't a repo, no control of versioning")
+            sys.exit(1)
+        current_release = self.run_cmd(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"]
+        ).strip()
+        if current_release[:7] == "release":
+            return current_release
+        branches = self.run_cmd(["git", "branch", "--all"]).split("\n")
+        for branch in branches:
+            if "remotes" in branch and "release" in branch:
+                return branch.split("/")[-1].strip()
+        raise Exception("No Remotes Found")
+
     def find_last_version_entry(self):
         for line in self.f:
             if len(line) > 2:
@@ -70,6 +78,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
         self.new = True
         if raw_version[start:stop] == self.current_branch[9:]:
             self.new = False
+        if self.version.strip() == "":
+            raise Exception("Version unknown")
         print(self.version)
 
     def parse_version_information(self):

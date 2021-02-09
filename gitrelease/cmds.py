@@ -59,7 +59,7 @@ def git_changelog():
         sys.exit(1)
     if sys.argv[1].lower() in ["a", "added", "adds"]:
         header = "Added"
-    if sys.argv[1].lower() in ["c", "changed", "changes", "fixes"]:
+    if sys.argv[1].lower() in ["c", "changed", "changes", "fixes", "updates"]:
         header = "Changed"
     if sys.argv[1].lower() in ["r", "removed", "removes"]:
         header = "Removed"
@@ -84,11 +84,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
             f.write(newfile)
         print("changelog installed")
         sys.exit(0)
-    if sys.argv[1].lower() in ["i", "install"]:
+    if sys.argv[1].lower() in ["r", "remove"]:
         if os.path.exists("CHANGELOG.md"):
             os.remove("CHANGELOG.md")
             sys.exit(0)
         sys.exit(1)
+
+    if sys.argv[1].lower() in ["e", "check"]:
+        if os.path.exists("CHANGELOG.md"):
+            cla = ChangeLogActions("CHANGELOG.md")
+            print(cla.get_current_release_branch())
+        return
+
     if len(sys.argv) == 2:
         entry = input("msg: ")
     else:
