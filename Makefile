@@ -3,37 +3,30 @@ ifneq (,$(wildcard /etc/redhat-release))
 else
     GITLIB := /usr/lib/git-core
 endif
-VERSION := 0.2.0
+VERSION := 0.2.1
 USRLIB := /usr/local/bin
+ADDFILES = aftermerge changelog nextrelease versionupdater
+TESTADDFILES = $(addprefix ta-,$(ADDFILES))
+REMOVEFILES = $(addprefix rm-,$(ADDFILES))
 CWD=$(shell pwd)
-install:
+
+install: $(ADDFILES)
+$(ADDFILES):
 ifneq ($(shell id -u),0)
 		@echo "you need to run this as root and build"
-		pip3 install dist/pyfocusd-$(VERSION).tar.gz || exit 1
-		@test -f $(USRLIB)/git-aftermerge || ( echo "aftermerge didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-aftermerge || ln -s $(USRLIB)/git-aftermerge $(GITLIB)/git-aftermerge
-		@echo "git-aftermerge installed"
-		@test -f $(USRLIB)/git-changelog || ( echo "changelog didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-changelog || ln -s $(USRLIB)/git-changelog $(GITLIB)/git-changelog
-		@echo "git-changelog installed"
-		@test -f $(USRLIB)/git-nextrelease || ( echo "nextrelease didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-nextrelease || ln -s $(USRLIB)/git-nextrelease $(GITLIB)/git-nextrelease
-		@echo "git-nextrelease installed"
-		@test -f $(USRLIB)/git-versionupdater || ( echo "versionupdater didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-versionupdater || ln -s $(USRLIB)/git-versionupdater $(GITLIB)/git-versionupdater
-		@echo "git-versionupdater installed"
+else
+		@test -f $(USRLIB)/git-$@ || ( echo "aftermerge didn't install correctly, aborting" && exit 1 )
+		@test -f $(GITLIB)/git-$@ || ln -s $(USRLIB)/git-$@ $(GITLIB)/git-$@
+		@echo "git-$@ installed"
 endif
 
-uninstall:
+uninstall: $(REMOVEFILES)
+$(REMOVEFILES):
 ifneq ($(shell id -u),0)
 		@echo "you need to run this as root"
 else
-		@test -f $(GITLIB)/git-aftermerge && rm -vf $(GITLIB)/git-aftermerge && echo "git-aftermerge uninstalled"
-		@test -f $(GITLIB)/git-changelog && rm -vf $(GITLIB)/git-changelog && echo "git-changelog uninstalled"
-		@test -f $(GITLIB)/git-nextrelease && rm -vf $(GITLIB)/git-nextrelease && echo "git-nextrelease uninstalled"
-		@test -f $(GITLIB)/git-versionupdater && rm -vf $(GITLIB)/git-versionupdater && echo "git-versionupdater uninstalled"
-		pip3 uninstall gitrelease
-endif
+		@test -f "$(GITLIB)/git-$(@:rm-%=%)" && rm -f "$(GITLIB)/git-$(@:rm-%=%)" && echo "git-$(@:rm-%=%) uninstalled" || echo "git-$(@:rm-%=%) not installed"
+endif 
 
 fmt:
 	poetry run black .  || exit 1
@@ -55,29 +48,28 @@ testmaster: master test
 build: test
 	poetry build
 
+deploylocal: build
+ifneq ($(shell id -u),0)
+	@echo "you need to run this as root"
+else
+	sudo @pip3 install dist/gitrelease-$(VERSION).tar.gz
+endif
+
 deploytest: build
 	python3 -m venv env
 	./env/bin/pip install wheel
 	./env/bin/pip install dist/gitrelease-$(VERSION).tar.gz
 	-echo "source ./env/bin/activate"
 
-testinstall:
+
+testinstall: $(TESTADDFILES)
+$(TESTADDFILES):
 ifneq ($(shell id -u),0)
 		@echo "you need to run this as root"
 else
-		@test -f $(CWD)/env/bin/git-aftermerge || ( echo "aftermerge didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-aftermerge || ln -s $(CWD)/env/bin/git-aftermerge $(GITLIB)/git-aftermerge
-		@echo "aftermerge installed"
-		@test -f $(CWD)/env/bin/git-changelog || ( echo "changelog didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-changelog || ln -s $(CWD)/env/bin/git-changelog $(GITLIB)/git-changelog
-		@echo "changelog installed"
-		@test -f $(CWD)/env/bin/git-nextrelease || ( echo "nextrelease didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-nextrelease || ln -s $(CWD)/env/bin/git-nextrelease $(GITLIB)/git-nextrelease
-		@echo "nextrelease installed"
-		@test -f $(CWD)/env/bin/git-versionupdater || ( echo "versionupdater didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-versionupdater || ln -s $(CWD)/env/bin/git-versionupdater $(GITLIB)/git-versionupdater
-		@echo "versionupdater installed"
-endif
+		@test -f $(GITLIB)/git-$(@:ta-%=%) && echo "$(@:ta-%=%) already installed" || ln -s "$(CWD)/env/bin/git-$(@:ta-%=%)" "$(GITLIB)/git-$(@:ta-%=%)"
+		@echo "git $(@:ta-%=%) installed"
+endif 
 
 deploy: build
 	poetry publish -r focus
@@ -101,4 +93,3 @@ clean:
 testenv:
 	mkdir ~/etc/systemd/system/
 	mkdir ~/var/run/
-
