@@ -68,6 +68,7 @@ def git_changelog():
         "sets",
         "repairs",
         "configures",
+        "refactors",
     ]:
         header = "Changed"
     if sys.argv[1].lower() in ["r", "removed", "removes"]:
