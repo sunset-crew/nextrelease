@@ -56,6 +56,7 @@ class AfterMerge(object):
                         "-o merge_request.create",
                         "-o merge_request.target=master",
                         "-o merge_request.remove_source_branch",
+                        '-o merge_request.title="' + self.branch + '"',
                         "--set-upstream",
                         "origin",
                         self.branch,
