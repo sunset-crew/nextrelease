@@ -57,9 +57,19 @@ def git_changelog():
         print("you need at least a change type")
         print("[a]dded|adds,[r]emoved|removes,[c]hanged|changes,[i]nstall")
         sys.exit(1)
-    if sys.argv[1].lower() in ["a", "added", "adds"]:
+    if sys.argv[1].lower() in ["a", "added", "adds", "installs", "loads"]:
         header = "Added"
-    if sys.argv[1].lower() in ["c", "changed", "changes", "fixes", "updates"]:
+    if sys.argv[1].lower() in [
+        "c",
+        "changed",
+        "changes",
+        "fixes",
+        "updates",
+        "sets",
+        "repairs",
+        "configures",
+        "refactors",
+    ]:
         header = "Changed"
     if sys.argv[1].lower() in ["r", "removed", "removes"]:
         header = "Removed"

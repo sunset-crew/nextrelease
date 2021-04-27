@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gitrelease"
-version = "0.2.1"
+version = "0.3.0"
 description = ""
 authors = ["Joe <joe@sunset-crew.com>"]
 
