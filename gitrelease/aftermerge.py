@@ -49,7 +49,17 @@ class AfterMerge(object):
             pvu = PoetryVersionUpdater(self.args)
             pvu.run_update()
         if self.args.no_remote:
-            options = ["-o merge_request.create", "-o merge_request.target=master", "-o merge_request.remove_source_branch"]
             print(
-                self.ga.git(["push",options, "--set-upstream", "origin", self.branch]), end=""
+                self.ga.git(
+                    [
+                        "push",
+                        "-o merge_request.create",
+                        "-o merge_request.target=master",
+                        "-o merge_request.remove_source_branch",
+                        "--set-upstream",
+                        "origin",
+                        self.branch,
+                    ]
+                ),
+                end="",
             )

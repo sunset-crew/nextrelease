@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.3.1] - 2021-04-27
+### Changed
+- fixes issue with forming the git command
+
 ## [0.3.0] - 2021-04-27
 ### Added
 - adds more descriptions to the various changelog areas
