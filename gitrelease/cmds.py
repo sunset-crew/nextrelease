@@ -1,7 +1,7 @@
 from .aftermerge import AfterMerge
 from .nextrelease import NextRelease
 from .changelog import ChangeLogActions
-from .versionupdater import PoetryVersionUpdater
+from .versionupdater import ReleaseVersionUpdater
 import sys
 import os
 import argparse
@@ -39,7 +39,7 @@ def git_versionupdater():
     run = subparser.add_parser("run", help="Run an Update, type")
     run.add_argument("increment", help="patch, minor, major")
     args = parser.parse_args()
-    poetverup = PoetryVersionUpdater(args)
+    poetverup = ReleaseVersionUpdater(args)
     actions = {
         "install": poetverup.install,
         "uninstall": poetverup.uninstall,
@@ -63,15 +63,18 @@ def git_changelog():
         "c",
         "changed",
         "changes",
+        "decouples",
+        "edits",
         "fixes",
         "updates",
         "sets",
         "repairs",
+        "replaces",
         "configures",
         "refactors",
     ]:
         header = "Changed"
-    if sys.argv[1].lower() in ["r", "removed", "removes"]:
+    if sys.argv[1].lower() in ["r", "removed", "removes", "cleans"]:
         header = "Removed"
 
     if sys.argv[1].lower() in ["i", "install"]:

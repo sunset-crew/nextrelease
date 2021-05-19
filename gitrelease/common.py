@@ -4,6 +4,11 @@ import os
 import json
 import sys
 import configparser
+from pkg_resources import parse_version
+
+
+class MissingProjectConfig(Exception):
+    pass
 
 
 class DefaultValues(object):
@@ -50,15 +55,35 @@ class CommonFunctions(DefaultValues):
         userhome = os.path.expanduser("~")
         return {"user": os.path.split(userhome)[-1], "userhome": userhome}
 
+    def dotenv_data(self):
+        if os.path.isfile(".version"):
+            command = 'env -i bash -c "source .version && env"'
+            for line in subprocess.getoutput(command).split("\n"):
+                key, value = line.split("=")
+                print(key, value)
+                os.environ[key] = value
+
     def get_project_info(self):
         config = {}
-        config["config"] = configparser.ConfigParser()
-        config["config"].read("pyproject.toml")
-        config["version"] = (
-            config["config"].get("tool.poetry", "version").replace('"', "")
-        )
-        config["project"] = config["config"].get("tool.poetry", "name").replace('"', "")
-        return config
+        if os.path.exists(".version"):
+            parser = configparser.ConfigParser()
+            with open(".version") as stream:
+                parser.read_string("[top]\n" + stream.read())
+            config["version"] = parser["top"]["version"]
+            config["project"] = parser["top"]["appname"].replace('"', "")
+            return config
+
+        if os.path.exists("pyproject.toml"):
+            config["config"] = configparser.ConfigParser()
+            config["config"].read("pyproject.toml")
+            config["version"] = (
+                config["config"].get("tool.poetry", "version").replace('"', "")
+            )
+            config["project"] = (
+                config["config"].get("tool.poetry", "name").replace('"', "")
+            )
+            return config
+        raise MissingProjectConfig("maybe setup an .version")
 
 
 class VersionUpdaterActions(CommonFunctions):
@@ -165,15 +190,14 @@ class GitActions(CommonFunctions):
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
         looping = True
-        line = lines.pop(0)
         while looping:
+            line = lines.pop(0)
             if line[:10] in ["Merge pull"]:
                 branch = line.split("/")[1]
                 looping = False
             if line[:12] in ["Merge branch"]:
                 branch = line.split(" ")[2].strip("'")
                 looping = False
-            line = lines.pop(0)
         print(branch)
         try:
             return branch.split("_")[1]
@@ -220,3 +244,27 @@ class GitActions(CommonFunctions):
             print(self.git(["pull"]), end="")
             print(self.git(["fetch", "-p"]), end="")
         print(self.git(["checkout", "-b", branch]), end="")
+
+    def get_current_tag(self):
+        return self.git(["describe", "--abbrev=0"])
+
+    def determine_next_version(self, increment, last_merge_release):
+        pv = parse_version(last_merge_release)
+        p = [int(x) for x in pv.base_version.split(".")]
+        if increment in ["major", "mj"]:
+            # major
+            p[0] = p[0] + 1
+            p[1] = 0
+            p[2] = 0
+        # minor
+        elif increment in ["minor", "mn"]:
+            p[1] = p[1] + 1
+            p[2] = 0
+        # patch
+        else:
+            p[2] = p[2] + 1
+
+        version = "{0}.{1}.{2}".format(p[0], p[1], p[2])
+        release = "v{0}".format(version)
+        branch = "release_{0}".format(release)
+        return (version, release, branch)
