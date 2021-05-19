@@ -11,6 +11,10 @@ from .common import GitActions, VersionUpdaterActions
 DEBUG = False
 
 
+class GitDirNotFound(Exception):
+    pass
+
+
 class DirtyMasterBranch(Exception):
     pass
 
@@ -23,21 +27,41 @@ class ChangesNotInstalled(Exception):
     pass
 
 
+class NoProjectDataFile(Exception):
+    pass
+
+
 class PoetryNotInPath(Exception):
     pass
 
 
-class PoetryVersionUpdater(VersionUpdaterActions):
+class ReleaseVersionUpdater(VersionUpdaterActions):
     def __init__(self, args):
         self.args = args
         self.ga = GitActions(args)
         super().__init__(args)
-        if "poetry" not in environ.get("PATH"):
-            raise PoetryNotInPath("Poetry bin is not, you might need to install it")
         if not exists(".git"):
-            raise DirtyMasterBranch("You need to be in the root of the git repo")
+            raise GitDirNotFound("You need to be in the root of the git repo")
+
+    def update_version(self):
+        current_tag = self.ga.get_current_tag().strip("\n")
+        next_tag_info = self.ga.determine_next_version(self.args.increment, current_tag)
+        lines = []
+        with open(".version", "r") as f:
+            lines = f.read()
+        print(lines)
+        new = [
+            "VERSION=" + next_tag_info[0] if "VERSION" in line else line
+            for line in lines.split("\n")
+        ]
+        with open(".version", "w") as f:
+            f.write("\n".join(new))
+        self.msg = f"Bumping {current_tag} to {next_tag_info[1]}"
+        print(self.msg, end="")
 
     def update_poetry(self):
+        if "poetry" not in environ.get("PATH"):
+            raise PoetryNotInPath("Poetry bin is not, you might need to install it")
         self.msg = self.ga.run_code(["poetry", "version", self.args.increment])
         print(self.msg, end="")
 
@@ -76,6 +100,13 @@ class PoetryVersionUpdater(VersionUpdaterActions):
         print(self.ga.git(["commit", "-a", f"""-m{self.msg} """]), end="")
 
     def run_update(self):
-        self.update_poetry()
+        if exists(".version"):
+            self.update_version()
+        elif exists("pyproject.toml"):
+            self.update_poetry()
+        else:
+            raise NoProjectDataFile(
+                "maybe add a .version file with an appname and version"
+            )
         self.gather_info()
         self.update_files()
