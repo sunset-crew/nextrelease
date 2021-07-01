@@ -6,6 +6,11 @@ This was built to be an easier way to do release branches.
 Usage
 -----
 
+Basic Setup 
+^^^^^^^^^^^
+
+Make sure the repo has a remote already.
+
 once the links a create into your git libexec folder. 
 
 Create a version file::
@@ -22,6 +27,9 @@ Next start the first release by typing::
     $ git nextrelease
 
 
+Standard Workflow
+^^^^^^^^^^^^^^^^^
+
 This will put you into the release branch directly.
 As a maintainer, it's you're job to manage the release branch. 
 When a task is assigned, create a branch from the release branch 
@@ -32,7 +40,7 @@ possibly with the task info::
     $ git push -o origin add_the_correct_vars_to_file
 
 
-Then once the developer is finished, pull and test branch
+Then once the developer is finished, pull and test branch::
 
     $ git checkout add_the_correct_vars_to_file
     $ git pull
@@ -57,12 +65,15 @@ or do it manually::
     $ git push --force
 
 
+After the merge into master/main
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Once everything is merged into main you run::
 
     $ git aftermerge patch # or minor for minor versions, major for major versions
 
 
-This sets up a tag and everyhing, now we can add the funnzies:: 
+This sets up a tag and everyhing, now we can add the funzies:: 
 
     $ git versionupdater install
     $ git changelog install
@@ -70,10 +81,10 @@ This sets up a tag and everyhing, now we can add the funnzies::
 
 Make sure to review the versionupdater.json to make sure its updating the files you need updated.
 
-Once you finish, test the changelog
+Once you finish, test the changelog::
 
     $ git changelog adds changelog and versionupdater
 
 
-This chould complete and add the commit automagically. 
+This should complete and add the commit automagically. 
 Now develop and try not to use pre-commit hooks.
