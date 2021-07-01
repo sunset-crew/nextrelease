@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.3.4] - 2021-06-30
+### Added
+- adds main branch identification for github
+
 ## [0.3.3] - 2021-05-18
 ### Changed
 - decouples poetry from the version updater into a .version file
