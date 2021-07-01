@@ -169,10 +169,21 @@ class GitActions(CommonFunctions):
     def __init__(self, args):
         self.args = args
 
+    def check_git_branch(self, branch):
+        obj = self.run_code(["git", "rev-parse", "--verify", branch], everything=True)
+        if obj["obj"].returncode == 0:
+            return True
+        return False
+
     def gather_git_info(self):
-        self.git(
-            ["checkout", "master"]
-        )  # use everything to determine if this checkout worked.
+        if self.check_git_branch("master"):
+            self.git(
+                ["checkout", "master"]
+            )  # use everything to determine if this checkout worked.
+        elif self.check_git_branch("main"):
+            self.git(
+                ["checkout", "main"]
+            )  # use everything to determine if this checkout worked.
         if self.args.no_remote:
             self.git(["pull"])
         self.tags = [x for x in self.git(["tag"]).split("\n") if x]
@@ -239,7 +250,10 @@ class GitActions(CommonFunctions):
             sys.exit(1)
 
     def create_new_branch(self, branch):
-        print(self.git(["checkout", "master"]), end="")
+        if self.check_git_branch("master"):
+            print(self.git(["checkout", "master"]), end="")
+        elif self.check_git_branch("main"):
+            print(self.git(["checkout", "main"]), end="")
         if self.args.no_remote:
             print(self.git(["pull"]), end="")
             print(self.git(["fetch", "-p"]), end="")

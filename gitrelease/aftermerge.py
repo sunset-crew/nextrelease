@@ -16,6 +16,7 @@ class AfterMerge(object):
         self.ga = GitActions(args)
         self.ga.gather_git_info()
         self.args = args
+        self.main_branch = "main" if self.ga.check_git_branch("main") else "master"
 
     def main(self):
         last_merged_release = self.ga.find_last_merged_release()
@@ -35,7 +36,7 @@ class AfterMerge(object):
                     [
                         "push",
                         "-o merge_request.create",
-                        "-o merge_request.target=master",
+                        "-o merge_request.target=" + self.main_branch,
                         "-o merge_request.remove_source_branch",
                         "-o merge_request.title=" + self.branch,
                         "--set-upstream",
