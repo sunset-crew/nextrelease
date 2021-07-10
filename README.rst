@@ -107,9 +107,10 @@ All in good time.
 It's recommended that you run ::
 
     make deploytest 
+    sudo make testinstall
 
 
-and map the executables to the proper location to take "full" advantage of it
+The second command maps it to a centos or debian install. Let me know of other common locations and I'll add them.
 
 If I didn't say it already, you're gonna need git2 or greater.:: 
 
