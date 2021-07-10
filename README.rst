@@ -11,11 +11,12 @@ Basic Setup
 
 Make sure the repo has a remote already.
 
-once the links a create into your git libexec folder. 
+Once the links are create into your git libexec folder,
 
-Create a version file::
-
-    $ cat 'VERSION=0.1.0' > .version
+create a version file in the repo you want to track::
+    
+    $ export APPNAME=aftermerge
+    $ echo "VERSION=0.1.0\nAPPNAME=${APPNAME}" > .version
 
     or if you have a poetry python project, 
 
@@ -27,15 +28,15 @@ Next start the first release by typing::
     $ git nextrelease
 
 
-Standard Workflow
-^^^^^^^^^^^^^^^^^
+Standard Maintainer Workflow
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This will put you into the release branch directly.
 As a maintainer, it's you're job to manage the release branch. 
 When a task is assigned, create a branch from the release branch 
 possibly with the task info::
 
-    $ git checkout release_v0.1.0
+    $ git checkout release_vx.x.x
     $ git checkout -b add_the_correct_vars_to_file
     $ git push -o origin add_the_correct_vars_to_file
 
@@ -45,12 +46,13 @@ Then once the developer is finished, pull and test branch::
     $ git checkout add_the_correct_vars_to_file
     $ git pull
     $ make test # or w.e. test you have
+    $ make deploytest # if you have venv setup
 
 
-Once you have happy, create a merge request or w.e. the systems methods merging task branch with release branch
+Once you have happy, create a merge request or w.e. the systems methods merging task branch with pull requests/merge requests
 or do it manually::
 
-    $ git checkout release_v0.1.0
+    $ git checkout release_vx.x.x
     $ git merge add_the_correct_vars_to_file
     $ git branch -D add_the_correct_vars_to_file
     $ git push --force
@@ -60,8 +62,8 @@ Once you have your release ready, merge it into master or main via a system
 or do it manually::
 
     $ git checkout main
-    $ git merge release_v0.1.0
-    $ git branch -D release_v0.1.0
+    $ git merge release_vx.x.x
+    $ git branch -D release_vx.x.x
     $ git push --force
 
 
@@ -70,7 +72,7 @@ After the merge into master/main
 
 Once everything is merged into main you run::
 
-    $ git aftermerge patch # or minor for minor versions, major for major versions
+    $ git aftermerge patch # or minor or major
 
 
 This sets up a tag and everyhing, now we can add the funzies:: 
@@ -88,3 +90,31 @@ Once you finish, test the changelog::
 
 This should complete and add the commit automagically. 
 Now develop and try not to use pre-commit hooks.
+
+
+Testing
+-------
+
+Suite. real, Suite
+^^^^^^^^^^^^^^^^^^
+
+Give it a shot, I'm always down to see if it works. 
+
+You'll need a project called: glab. Which also has it's own release system that I haven't tried yet because I don't want to demoralize myself.
+
+All in good time.
+
+It's recommended that you run ::
+
+    make deploytest 
+    sudo make testinstall
+
+
+The second command maps it to a centos or debian install. Let me know of other common locations and I'll add them.
+
+If I didn't say it already, you're gonna need git2 or greater.:: 
+
+    $ ./tests/suite short
+
+
+It should fail at the various commands to look at. I may add some bright colors too... maybe

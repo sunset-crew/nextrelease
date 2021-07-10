@@ -128,7 +128,7 @@ short(){
     initial_tests major
     changelog_test adds a quick testing
     aftermerge_test release_v1.0.0 minor
-    changelog_test test for minor upgrade
+    changelog_test updates the system one level
     aftermerge_test release_v1.1.0 patch
     changelog_test changes test for major
 }
