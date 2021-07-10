@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - adds better readme notes and directions
 
+### Removed
+- removes actual numbers in version examples replaces with xs
+
 ### Changed
 - fixes bad leading word for the changelog actions
 

@@ -52,7 +52,7 @@ Then once the developer is finished, pull and test branch::
 Once you have happy, create a merge request or w.e. the systems methods merging task branch with pull requests/merge requests
 or do it manually::
 
-    $ git checkout release_v0.1.0
+    $ git checkout release_vx.x.x
     $ git merge add_the_correct_vars_to_file
     $ git branch -D add_the_correct_vars_to_file
     $ git push --force
@@ -62,8 +62,8 @@ Once you have your release ready, merge it into master or main via a system
 or do it manually::
 
     $ git checkout main
-    $ git merge release_v0.1.0
-    $ git branch -D release_v0.1.0
+    $ git merge release_vx.x.x
+    $ git branch -D release_vx.x.x
     $ git push --force
 
 
