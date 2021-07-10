@@ -7,6 +7,7 @@ import json
 from os.path import exists
 from os import environ
 from .common import GitActions, VersionUpdaterActions
+import argparse
 
 DEBUG = False
 
@@ -37,7 +38,6 @@ class PoetryNotInPath(Exception):
 
 class ReleaseVersionUpdater(VersionUpdaterActions):
     def __init__(self, args):
-        self.args = args
         self.ga = GitActions(args)
         super().__init__(args)
         if not exists(".git"):
@@ -56,7 +56,7 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         ]
         with open(".version", "w") as f:
             f.write("\n".join(new))
-        self.msg = f"Bumping {current_tag} to {next_tag_info[1]}"
+        self.msg = f"Bumping {current_tag} to {next_tag_info[1]}\n"
         print(self.msg, end="")
 
     def update_poetry(self):
@@ -99,7 +99,7 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         print(self.ga.git(["add", ".", "--all" ""]), end="")
         print(self.ga.git(["commit", "-a", f"""-m{self.msg} """]), end="")
 
-    def run_update(self):
+    def run(self):
         if exists(".version"):
             self.update_version()
         elif exists("pyproject.toml"):
@@ -110,3 +110,28 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
             )
         self.gather_info()
         self.update_files()
+
+
+class ReleaseVersionUpdaterController(ReleaseVersionUpdater):
+    def __init__(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "--no-remote",
+            action="store_false",
+            help="Dont use the remote based commands",
+        )
+        subparser = parser.add_subparsers(dest="action")
+        subparser.add_parser("install", help="Install Version Updater")
+        subparser.add_parser("uninstall", help="Uninstall Version Updater")
+        run = subparser.add_parser("run", help="Run an Update, type")
+        run.add_argument("increment", help="patch, minor, major")
+        super().__init__(parser.parse_args())
+
+    def __call__(self):
+        allowed_funcs = [
+            "install",
+            "uninstall",
+            "run",
+        ]
+        if self.args.action in allowed_funcs:
+            getattr(self, self.args.action)()
