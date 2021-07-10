@@ -1,0 +1,143 @@
+#!/bin/bash
+#
+# Testing Suite Script
+# 
+
+APPNAME="$(basename "$0")"
+
+die(){
+    echo "$@"
+    exit
+}
+
+setup(){
+    if [ ! -f "Makefile" ] && [ ! -d ".git" ] && [ ! -d "gitrelease" ]
+    then
+        cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        cd ..
+    fi
+    [ ! -z "$1" ] && [ "$1" == "full" ] && make deploytest
+    cd /tmp
+    glab repo create "${USER}/${APPNAME}" || die "Could not create a repo ${USER}/${APPNAME}"
+    cd ${APPNAME}
+}
+
+first_commit(){
+    echo "VERSION=0.1.0" > .version
+    echo "APPNAME=${APPNAME}" >> .version
+    git add .
+    git commit -a -m"First Commit"
+    git push --set-upstream origin master
+}
+
+second_commit(){
+    echo "Second Commit" > note.txt
+    git add .
+    git commit -a -m"Second Commit"
+    git push
+}
+
+nextrelease_test(){
+    git nextrelease || die "Nextrelease Broke"
+}
+
+changelog_versionupdater_install_test(){
+    git changelog install || die "Changelog Install Failed"
+    git versionupdater install || die "VersionUpdater Install Failed"
+}
+
+changelog_test(){
+    msg=${@:2}
+    echo ${msg} > note.txt
+    git add .
+    git changelog $1 ${msg} || die "Changelog Install Failed: ${msg}"
+    git push
+}
+
+first_aftermerge_test(){
+    glab mr create -s release_v0.1.0 -b master --title release_v0.1.0  --description release_v0.1.0 -y || die "Could not create merge request"
+    sleep 2
+    glab mr merge release_v0.1.0 -d -y || die "Could not merge merge request"
+    git aftermerge patch || die "Aftermerge Patch Failed"
+}
+
+aftermerge_test(){
+    [ -z "$1" ] && die "you need a branch"
+    [ -z "$2" ] && die "you need an increment"
+    branch="$1"
+    incr="$2"
+    glab mr update ${branch} --ready
+    sleep 1
+    glab mr merge ${branch} -d -y || die "Could not merge merge request"
+    git aftermerge ${incr} || die "Aftermerge Patch Failed"
+}
+
+clean(){
+    glab repo delete ${USER}/${APPNAME} -y
+    [ -f "/tmp/${APPNAME}" ] && cat /tmp/${APPNAME}/note.txt
+    rm -rf /tmp/${APPNAME}
+}
+
+initial_tests(){
+    first_commit
+    nextrelease_test
+    second_commit
+    first_aftermerge_test
+    changelog_versionupdater_install_test
+    changelog_test adds changelog and version updater
+    aftermerge_test release_v0.1.1 "$1"
+}
+
+all(){
+    # setup_testarea
+    setup full
+    initial_tests minor
+    changelog_test removes test for minor
+
+    aftermerge_test release_v0.2.0 major
+    changelog_test changed the first time
+    changelog_test changes the second one
+    changelog_test decouples this from that
+
+    aftermerge_test release_v1.0.0 patch
+    changelog_test edits this
+    changelog_test fixes this one and again
+    changelog_test updates the system 
+    changelog_test sets the right things
+
+    aftermerge_test release_v1.0.1 major
+    changelog_test repairs the system
+    changelog_test replaces this one
+    changelog_test configures and another
+
+    aftermerge_test release_v2.0.0 patch
+    changelog_test refactors this one
+    changelog_test prevents make it fun
+}
+
+manual(){
+  all
+  changelog_test allows
+  changelog_test changes test for major
+}
+
+short(){
+    # setup_testarea
+    setup
+    initial_tests major
+    changelog_test adds a quick testing
+    aftermerge_test release_v1.0.0 minor
+    changelog_test test for minor upgrade
+    aftermerge_test release_v1.1.0 patch
+    changelog_test changes test for major
+}
+
+[ -z $1 ] && die "You need a subcmd"
+
+func=$1
+
+shift
+
+${func} "$@"
+
+die "This has Completed Successfully!!!"
