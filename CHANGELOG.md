@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.3.6] - 2021-07-10
 ### Added
 - adds test suite and refactors a lot
+- adds better notes to test suite
 
 ## [0.3.5] - 2021-06-30
 ### Added

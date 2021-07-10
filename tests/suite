@@ -116,13 +116,14 @@ all(){
 }
 
 manual(){
+  # You should not run this automated
   all
   changelog_test allows
   changelog_test changes test for major
 }
 
 short(){
-    # setup_testarea
+    # Shortened Testing, for post linting and such
     setup
     initial_tests major
     changelog_test adds a quick testing
