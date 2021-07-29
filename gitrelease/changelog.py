@@ -164,6 +164,7 @@ class ChangeLogController:
             "changed",
             "changes",
             "decouples",
+            "deploys",
             "edits",
             "fixes",
             "updates",
