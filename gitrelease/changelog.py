@@ -140,7 +140,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
         self.parse_last_version_entry()
         obj = self.parse_version_information()
         # obj = self.add_data_to_object(obj,"Added","adds the proper thing now")
-        obj[heading]["data"].append(entry)
+        try:
+            obj[heading]["data"].append(entry)
+        except KeyError:
+            print("You need a word from the list, might also need an 's' at the end")
+            sys.exit(1)
         self.build_updated_section(obj)
         count = self.i
         the_rest_of_the_doc = "\n".join(self.f[count:])
@@ -164,6 +168,7 @@ class ChangeLogController:
             "changed",
             "changes",
             "decouples",
+            "deploys",
             "edits",
             "fixes",
             "updates",

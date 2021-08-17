@@ -118,3 +118,39 @@ If I didn't say it already, you're gonna need git2 or greater.::
 
 
 It should fail at the various commands to look at. I may add some bright colors too... maybe
+
+
+Verb Index
+----------
+
+Added
+^^^^^
+adds
+installs
+loads
+added
+
+
+Changed
+^^^^^^^
+changed
+changes
+decouples
+deploys
+edits
+fixes
+updates
+sets
+repairs
+replaces
+configures
+refactors
+prevents
+allows
+
+
+Removed
+^^^^^^^
+removed
+removes
+cleans
