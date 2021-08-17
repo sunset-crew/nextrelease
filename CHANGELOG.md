@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - adds deploys keyword for changes
 - adds captured error for leading verb on changelog messages
+- adds verb list to readme
 
 ## [0.3.7] - 2021-07-10
 ### Added
