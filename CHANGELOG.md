@@ -5,9 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.3.8] - 2021-07-29
+## [0.3.8] - 2021-08-17
 ### Added
 - adds deploys keyword for changes
+- adds captured error for leading verb on changelog messages
 
 ## [0.3.7] - 2021-07-10
 ### Added
