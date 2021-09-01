@@ -164,22 +164,24 @@ class ChangeLogController:
         if sys.argv[1].lower() in ["a", "added", "adds", "installs", "loads"]:
             header = "Added"
         if sys.argv[1].lower() in [
+            "allows",
             "c",
             "changed",
             "changes",
+            "configures",
             "decouples",
             "deploys",
             "edits",
             "fixes",
-            "updates",
-            "sets",
+            "finishes",
+            "moves",
+            "prevents",
             "repairs",
             "replaces",
-            "configures",
             "refactors",
-            "prevents",
-            "allows",
-            "moves",
+            "sets",
+            "updates",
+            "wraps",
         ]:
             header = "Changed"
         if sys.argv[1].lower() in ["r", "removed", "removes", "cleans"]:
