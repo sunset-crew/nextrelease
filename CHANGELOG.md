@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - adds moves word to the changelog system
 - adds and organizes the change words
 - adds more words to the changelog system
+- adds temporary fix section
 
 ## [0.3.8] - 2021-08-17
 ### Added

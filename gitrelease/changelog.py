@@ -101,6 +101,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
             "Added": {"active": False, "data": []},
             "Removed": {"active": False, "data": []},
             "Changed": {"active": False, "data": []},
+            "Temporary": {"active": False, "data": []},
         }
         if not self.new:
             count = self.i + 1
@@ -194,6 +195,8 @@ class ChangeLogController:
             header = "Changed"
         if sys.argv[1].lower() in ["cleans", "r", "removed", "removes", "uncomments"]:
             header = "Removed"
+        if sys.argv[1].lower() in ["tmpfix"]:
+            header = "Temporary"
 
         if sys.argv[1].lower() in ["i", "install"]:
             if os.path.exists("CHANGELOG.md"):
