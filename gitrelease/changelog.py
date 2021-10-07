@@ -190,6 +190,7 @@ class ChangeLogController:
             "refactors",
             "sets",
             "updates",
+            "wires",
             "wraps",
         ]:
             header = "Changed"

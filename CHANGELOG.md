@@ -5,12 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.3.9] - 2021-10-06
+## [0.3.9] - 2021-10-07
 ### Added
 - adds moves word to the changelog system
 - adds and organizes the change words
 - adds more words to the changelog system
 - adds temporary fix section
+- adds wires word
 
 ## [0.3.8] - 2021-08-17
 ### Added
