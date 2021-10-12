@@ -101,6 +101,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
             "Added": {"active": False, "data": []},
             "Removed": {"active": False, "data": []},
             "Changed": {"active": False, "data": []},
+            "Temporary": {"active": False, "data": []},
         }
         if not self.new:
             count = self.i + 1
@@ -161,28 +162,43 @@ class ChangeLogController:
             print("[a]dded|adds,[r]emoved|removes,[c]hanged|changes,[i]nstall")
             sys.exit(1)
 
-        if sys.argv[1].lower() in ["a", "added", "adds", "installs", "loads"]:
+        if sys.argv[1].lower() in [
+            "a",
+            "added",
+            "adds",
+            "comments",
+            "installs",
+            "loads",
+        ]:
             header = "Added"
         if sys.argv[1].lower() in [
+            "allows",
             "c",
             "changed",
             "changes",
+            "configures",
             "decouples",
             "deploys",
             "edits",
             "fixes",
-            "updates",
-            "sets",
+            "finishes",
+            "moves",
+            "prevents",
+            "renames",
             "repairs",
             "replaces",
-            "configures",
             "refactors",
-            "prevents",
-            "allows",
+            "sets",
+            "updates",
+            "uncouples",
+            "wires",
+            "wraps",
         ]:
             header = "Changed"
-        if sys.argv[1].lower() in ["r", "removed", "removes", "cleans"]:
+        if sys.argv[1].lower() in ["cleans", "r", "removed", "removes", "uncomments"]:
             header = "Removed"
+        if sys.argv[1].lower() in ["tmpfix"]:
+            header = "Temporary"
 
         if sys.argv[1].lower() in ["i", "install"]:
             if os.path.exists("CHANGELOG.md"):
@@ -224,8 +240,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
             new_file = cla.new_change_log(header, entry)
             with open("CHANGELOG.md", "w") as f:
                 f.write(new_file)
-            cla.run_cmd(["git", "add", "."])
-            commit_cmd = ["git", "commit", "-a", """-m{0} """.format(entry)]
+            cla.run_cmd(["git", "add", "CHANGELOG.md"])
+            commit_cmd = ["git", "commit", """-m{0} """.format(entry)]
             print(" ".join(commit_cmd))
             cla.run_cmd(commit_cmd)
             return
