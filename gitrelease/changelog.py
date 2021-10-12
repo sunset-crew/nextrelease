@@ -190,6 +190,7 @@ class ChangeLogController:
             "refactors",
             "sets",
             "updates",
+            "uncouples",
             "wires",
             "wraps",
         ]:
