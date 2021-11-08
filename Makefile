@@ -51,8 +51,14 @@ build: test
 deploy: build
 	sudo /usr/bin/pip3 install dist/gitrelease-$(VERSION).tar.gz
 
+remove:
+	sudo /usr/bin/pip3 uninstall -y gitrelease
+	/usr/bin/pip3 uninstall -y gitrelease
+
 deployuser: build
-	sudo /usr/bin/pip3 install --user dist/gitrelease-$(VERSION).tar.gz
+	/usr/bin/pip3 install --user dist/gitrelease-$(VERSION).tar.gz
+
+
 
 deploytest: build
 	python3 -m venv env

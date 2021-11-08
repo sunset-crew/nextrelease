@@ -3,6 +3,17 @@ Git NextRelease
 
 This was built to be an easier way to do release branches. 
 
+Install
+-------
+
+You'll need poetry and a few other things installed, like make.::
+
+    make deploy # -- all users
+    make deployuser # -- current user only
+    make remove # -- removes from both current user and system
+
+
+
 Usage
 -----
 
