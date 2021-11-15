@@ -14,17 +14,12 @@ sphinx = "^3.4.1"
 recommonmark = "^0.7.1"
 pytest = "^6.2.1"
 
-
 [tool.poetry.scripts]
 git-aftermerge = "gitrelease.cmds:git_aftermerge"
 git-nextrelease = "gitrelease.cmds:git_nextrelease"
 git-versionupdater = "gitrelease.cmds:git_versionupdater"
 git-changelog = "gitrelease.cmds:git_changelog"
 
-[[tool.poetry.source]]
-name = "focus"
-url = "https://joes.focu.site/"
-secondary = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

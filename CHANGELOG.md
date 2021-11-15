@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.3.10] - 2021-11-08
+### Added
+- adds better deployment getting you up and going
+- adds remove and rewrites deploy function for make
+
 ## [0.3.9] - 2021-10-11
 ### Added
 - adds moves word to the changelog system
