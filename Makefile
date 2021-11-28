@@ -3,7 +3,7 @@ ifneq (,$(wildcard /etc/redhat-release))
 else
     GITLIB := /usr/lib/git-core
 endif
-VERSION := 0.3.9
+VERSION := 0.3.10
 USRLIB := /usr/local/bin
 ADDFILES = aftermerge changelog nextrelease versionupdater
 TESTADDFILES = $(addprefix ta-,$(ADDFILES))
@@ -15,7 +15,7 @@ $(ADDFILES):
 ifneq ($(shell id -u),0)
 		@echo "you need to run this as root and build"
 else
-		@test -f $(USRLIB)/git-$@ || ( echo "aftermerge didn't install correctly, aborting" && exit 1 )
+		@test -f $(USRLIB)/git-$@ && ( echo "aftermerge didn't install correctly, aborting" && exit 1 )
 		@test -f $(GITLIB)/git-$@ || ln -s $(USRLIB)/git-$@ $(GITLIB)/git-$@
 		@echo "git-$@ installed"
 endif
@@ -48,12 +48,17 @@ testmaster: master test
 build: test
 	poetry build
 
-deploylocal: build
-ifneq ($(shell id -u),0)
-	@echo "you need to run this as root"
-else
-	sudo @pip3 install dist/gitrelease-$(VERSION).tar.gz
-endif
+deploy: build
+	sudo /usr/bin/pip3 install dist/gitrelease-$(VERSION).tar.gz
+
+remove:
+	sudo /usr/bin/pip3 uninstall -y gitrelease
+	/usr/bin/pip3 uninstall -y gitrelease
+
+deployuser: build
+	/usr/bin/pip3 install --user dist/gitrelease-$(VERSION).tar.gz
+
+
 
 deploytest: build
 	python3 -m venv env
@@ -71,8 +76,8 @@ else
 		@echo "git $(@:ta-%=%) installed"
 endif 
 
-deploy: build
-	poetry publish -r focus
+#deploy: build
+#	poetry publish -r focus
 
 patch:
 	-git checkout -f

@@ -8,6 +8,7 @@ from os.path import exists
 from os import environ
 from .common import GitActions, VersionUpdaterActions
 import argparse
+from shutil import which
 
 DEBUG = False
 
@@ -60,7 +61,7 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         print(self.msg, end="")
 
     def update_poetry(self):
-        if "poetry" not in environ.get("PATH"):
+        if "poetry" not in environ.get("PATH") and not which("poetry"):
             raise PoetryNotInPath("Poetry bin is not, you might need to install it")
         self.msg = self.ga.run_code(["poetry", "version", self.args.increment])
         print(self.msg, end="")
