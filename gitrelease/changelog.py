@@ -42,20 +42,6 @@ change_verb_list = [
 remove_verb_list = ["cleans", "r", "removed", "removes", "comments"]
 
 
-class WordPlay:
-    def __init__(self):
-        pass
-
-    def add_s(self):
-        pass
-
-    def add_ed(self):
-        pass
-
-    def add_d(self):
-        pass
-
-
 class ChangeLogActions(object):
     def __init__(self, filelocation):
         if not os.path.exists(".git"):
