@@ -27,7 +27,8 @@ Once the links are create into your git libexec folder,
 create a version file in the repo you want to track::
     
     $ export APPNAME=aftermerge
-    $ echo "VERSION=0.1.0\nAPPNAME=${APPNAME}" > .version
+    $ echo "VERSION=0.1.0" > .version
+    $ echo "APPNAME=${APPNAME}" >> .version
 
 
 or if you have a poetry python project:: 
@@ -80,7 +81,8 @@ Once you have your release ready, merge it into master or main via a system like
 or do it manually::
 
     $ git checkout main
-    $ git merge release_vx.x.x
+    # you need to force the merge commit --no-ff
+    $ git merge --no-ff release_vx.x.x
     $ git branch -D release_vx.x.x
     $ git push --force
 
