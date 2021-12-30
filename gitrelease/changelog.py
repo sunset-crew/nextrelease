@@ -3,6 +3,44 @@ import sys
 import os
 import subprocess
 
+add_verb_list = [
+    "a",
+    "allows",
+    "added",
+    "adds",
+    "installs",
+    "loads",
+]
+
+change_verb_list = [
+    "c",
+    "changed",
+    "changes",
+    "configures",
+    "decouples",
+    "deploys",
+    "edits",
+    "fixes",
+    "finishes",
+    "moves",
+    "prevents",
+    "renames",
+    "repairs",
+    "replaces",
+    "refactors",
+    "restores",
+    "returns",
+    "sets",
+    "splits",
+    "updates",
+    "uncomments",
+    "uncouples",
+    "wires",
+    "wraps",
+]
+
+remove_verb_list = ["cleans", "r", "removed", "removes", "comments"]
+
 
 class WordPlay:
     def __init__(self):
@@ -162,43 +200,11 @@ class ChangeLogController:
             print("[a]dded|adds,[r]emoved|removes,[c]hanged|changes,[i]nstall")
             sys.exit(1)
 
-        if sys.argv[1].lower() in [
-            "a",
-            "added",
-            "adds",
-            "comments",
-            "installs",
-            "loads",
-        ]:
+        if sys.argv[1].lower() in add_verb_list:
             header = "Added"
-        if sys.argv[1].lower() in [
-            "allows",
-            "c",
-            "changed",
-            "changes",
-            "configures",
-            "decouples",
-            "deploys",
-            "edits",
-            "fixes",
-            "finishes",
-            "moves",
-            "prevents",
-            "renames",
-            "repairs",
-            "replaces",
-            "refactors",
-            "restores",
-            "returns",
-            "sets",
-            "splits",
-            "updates",
-            "uncouples",
-            "wires",
-            "wraps",
-        ]:
+        if sys.argv[1].lower() in change_verb_list:
             header = "Changed"
-        if sys.argv[1].lower() in ["cleans", "r", "removed", "removes", "uncomments"]:
+        if sys.argv[1].lower() in remove_verb_list:
             header = "Removed"
         if sys.argv[1].lower() in ["tmpfix"]:
             header = "Temporary"

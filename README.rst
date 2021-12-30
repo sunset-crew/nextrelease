@@ -29,9 +29,16 @@ create a version file in the repo you want to track::
     $ export APPNAME=aftermerge
     $ echo "VERSION=0.1.0\nAPPNAME=${APPNAME}" > .version
 
-    or if you have a poetry python project, 
+
+or if you have a poetry python project:: 
 
     $ poetry init or poetry new package; cd package
+
+
+then give it at least a commit to work with(for either)::
+    
+    $ git init
+    $ git commit -a -m "First Commit"
 
 
 Next start the first release by typing::
@@ -60,7 +67,7 @@ Then once the developer is finished, pull and test branch::
     $ make deploytest # if you have venv setup
 
 
-Once you have happy, create a merge request or w.e. the systems methods merging task branch with pull requests/merge requests
+Once you are happy with the release, create a merge request or w.e. the systems methods merging task branch with pull requests/merge requests
 or do it manually::
 
     $ git checkout release_vx.x.x
@@ -69,7 +76,7 @@ or do it manually::
     $ git push --force
 
 
-Once you have your release ready, merge it into master or main via a system
+Once you have your release ready, merge it into master or main via a system like github, gitlab
 or do it manually::
 
     $ git checkout main
@@ -136,28 +143,37 @@ Verb Index
 
 Added
 ^^^^^
+added
 adds
+comments
 installs
 loads
-added
 
 
 Changed
 ^^^^^^^
 changed
 changes
+configures
 decouples
 deploys
 edits
 fixes
-updates
-sets
+finishes
+moves
+prevents
+renames
 repairs
 replaces
-configures
 refactors
-prevents
-allows
+restores
+returns
+sets
+splits
+updates
+uncouples
+wires
+wraps
 
 
 Removed
@@ -165,3 +181,4 @@ Removed
 removed
 removes
 cleans
+uncomment
