@@ -179,7 +179,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 class ChangeLogController:
     def __call__(self):
-        """ Changelog management """
+        """Changelog management"""
         header = ""
         if len(sys.argv) < 2:
             print("you need at least a change type")
