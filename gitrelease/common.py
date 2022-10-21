@@ -1,6 +1,7 @@
 import subprocess
 import uuid
 import os
+import re
 import json
 import sys
 import configparser
@@ -204,9 +205,16 @@ class GitActions(CommonFunctions):
         while looping:
             line = lines.pop(0)
             if line[:10] in ["Merge pull"]:
-                branch = line.split("/")[1]
+                try:
+                    # github
+                    branch = line.split("/")[1]
+                except IndexError:
+                    # gitea
+                    word_list = re.findall(r"release_v\d.\d.\d", line)
+                    branch = word_list[0]
                 looping = False
             if line[:12] in ["Merge branch"]:
+                # gitlab
                 branch = line.split(" ")[2].strip("'")
                 looping = False
         print(branch)
