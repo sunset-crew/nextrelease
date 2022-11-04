@@ -5,9 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.4.2] - 2022-10-21
+## [0.4.2] - 2022-11-04
 ### Added
 - adds gitea merge commit parsing method
+- adds the fixor command to the mix
 
 ## [0.4.1] - 2022-02-21
 ### Changed
