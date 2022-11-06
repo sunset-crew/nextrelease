@@ -111,6 +111,13 @@ Once you finish, test the changelog::
 This should complete and add the commit automagically. 
 Now develop and try not to use pre-commit hooks.
 
+Some helpful git commands are::
+
+    $ git rebase -i <a commit>
+    $ "edit the commits"
+    $ git commit --amend --reset-author
+    $ git rebase --continue
+
 
 Testing
 -------
