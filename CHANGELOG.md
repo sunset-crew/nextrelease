@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.4.4] - 2022-11-05
+### Added
+- adds extra git notes for resetting git information
+
 ## [0.4.2] - 2022-11-04
 ### Added
 - adds gitea merge commit parsing method
