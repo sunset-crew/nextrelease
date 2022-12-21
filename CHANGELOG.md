@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - updates release to match present tags
 - fixes issue with changelog repeating data on changelog for first setup
+- changes to proper version name
 
 ## [0.4.5] - 2022-11-21
 ### Added
