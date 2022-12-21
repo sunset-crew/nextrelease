@@ -5,9 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.4.6] - 2022-11-21
+## [0.4.6] - 2022-12-21
 ### Changed
 - updates release to match present tags
+- fixes issue with changelog repeating data on changelog for first setup
 
 ## [0.4.5] - 2022-11-21
 ### Added
