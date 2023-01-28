@@ -59,6 +59,11 @@ possibly with the task info::
     $ git checkout -b add_the_correct_vars_to_file
     $ git push -o origin add_the_correct_vars_to_file
 
+Or::
+
+    $ git current
+    $ git feature <feature/fix> <name_of_branch>
+
 
 Then once the developer is finished, pull and test branch::
 

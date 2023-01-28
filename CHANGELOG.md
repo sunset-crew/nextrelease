@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.4.7] - 2023-01-28
 ### Added
 - adds trunk_branch env var for different trunk to check release out from
+- adds feature example in readme
 
 ### Changed
 - changes fixor to feature
