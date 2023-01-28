@@ -41,7 +41,7 @@ class Command(object):
     def fix(self):
         name = "_".join(self.args.fix_branch_name)
         name = f"Fix-{name}"
-        (self.ga.git(["checkout", "-b", name]))
+        print(self.ga.git(["checkout", "-b", name]))
         if self.args.no_remote:
             self.ga.git(["push", "--set-upstream", "origin", name])
 

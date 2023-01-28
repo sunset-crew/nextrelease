@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.4.7] - 2023-01-28
+### Added
+- adds trunk_branch env var for different trunk to check release out from
+
 ## [0.4.6] - 2022-12-21
 ### Changed
 - updates release to match present tags

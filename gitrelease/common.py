@@ -263,10 +263,17 @@ class GitActions(CommonFunctions):
             sys.exit(1)
 
     def create_new_branch(self, branch):
-        if self.check_git_branch("master"):
+        trunk_branch = os.getenv("TRUNK_BRANCH", "development")
+        if self.check_git_branch(trunk_branch):
+            print(self.git(["checkout", trunk_branch]), end="")
+        elif self.check_git_branch("master"):
             print(self.git(["checkout", "master"]), end="")
         elif self.check_git_branch("main"):
             print(self.git(["checkout", "main"]), end="")
+        else:
+            print("Main/Master/Development Branches all missing")
+            print("Either set TRUNK_BRANCH env or create the branches")
+            sys.exit(1)
         if self.args.no_remote:
             print(self.git(["pull"]), end="")
             print(self.git(["fetch", "-p"]), end="")
