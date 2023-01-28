@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - adds trunk_branch env var for different trunk to check release out from
 
+### Changed
+- changes fixor to feature
+
 ## [0.4.6] - 2022-12-21
 ### Changed
 - updates release to match present tags
