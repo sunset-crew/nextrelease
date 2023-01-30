@@ -39,15 +39,19 @@ class Command(object):
         self.parser.print_help()
 
     def fix(self):
+        if len(self.args.fix_branch_name) == 0:
+            return "the branch needs a name"
         name = "_".join(self.args.fix_branch_name)
-        name = f"Fix-{name}"
+        name = f"fix/{name}"
         print(self.ga.git(["checkout", "-b", name]))
         if self.args.no_remote:
             self.ga.git(["push", "--set-upstream", "origin", name])
 
     def feature(self):
+        if len(self.args.feature_branch_name) == 0:
+            return "the branch needs a name"
         name = "_".join(self.args.feature_branch_name)
-        name = f"Feature-{name}"
+        name = f"feature/{name}"
         print(self.ga.git(["checkout", "-b", name]))
         if self.args.no_remote:
             self.ga.git(["push", "--set-upstream", "origin", name])

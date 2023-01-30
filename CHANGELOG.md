@@ -5,13 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.4.7] - 2023-01-28
+## [0.4.7] - 2023-01-30
 ### Added
 - adds trunk_branch env var for different trunk to check release out from
 - adds feature example in readme
 
 ### Changed
 - changes fixor to feature
+- fixes the fixfeature section adding a blocker if a name is not provided
 
 ## [0.4.6] - 2022-12-21
 ### Changed
