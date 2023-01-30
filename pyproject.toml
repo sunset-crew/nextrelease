@@ -19,7 +19,7 @@ git-aftermerge = "gitrelease.cmds:git_aftermerge"
 git-nextrelease = "gitrelease.cmds:git_nextrelease"
 git-versionupdater = "gitrelease.cmds:git_versionupdater"
 git-changelog = "gitrelease.cmds:git_changelog"
-git-feature = "gitrelease.feature:main"
+git-ff = "gitrelease.fixfeature:main"
 
 
 [build-system]
