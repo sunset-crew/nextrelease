@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "gitrelease"
 version = "0.4.7"
-description = ""
+description = "a git release/feature/fix branch management cli"
 authors = ["Joe <joe@sunset-crew.com>"]
 
 [tool.poetry.dependencies]
