@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - adds trunk_branch env var for different trunk to check release out from
 - adds feature example in readme
 - adds description text to pyproject
+- adds config file for default separator of fix and feature
 
 ### Changed
 - changes fixor to feature
