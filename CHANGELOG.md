@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - changes fixor to feature
 - fixes the fixfeature section adding a blocker if a name is not provided
+- updates requests module
 
 ## [0.4.6] - 2022-12-21
 ### Changed
