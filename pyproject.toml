@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "gitrelease"
-version = "0.4.6"
-description = ""
+version = "0.4.7"
+description = "a git release/feature/fix branch management cli"
 authors = ["Joe <joe@sunset-crew.com>"]
 
 [tool.poetry.dependencies]
@@ -19,7 +19,7 @@ git-aftermerge = "gitrelease.cmds:git_aftermerge"
 git-nextrelease = "gitrelease.cmds:git_nextrelease"
 git-versionupdater = "gitrelease.cmds:git_versionupdater"
 git-changelog = "gitrelease.cmds:git_changelog"
-git-fixor = "gitrelease.fixor:main"
+git-ff = "gitrelease.fixfeature:main"
 
 
 [build-system]
