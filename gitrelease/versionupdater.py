@@ -41,23 +41,31 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
     def __init__(self, args):
         self.ga = GitActions(args)
         super().__init__(args)
+        self.current_tag = self.ga.get_current_tag().strip("\n")
+        self.next_tag_info = self.ga.determine_next_version(
+            self.args.increment, self.current_tag
+        )
         if not exists(".git"):
             raise GitDirNotFound("You need to be in the root of the git repo")
 
     def update_version(self):
-        current_tag = self.ga.get_current_tag().strip("\n")
-        next_tag_info = self.ga.determine_next_version(self.args.increment, current_tag)
+        # ~ current_tag = self.ga.get_current_tag().strip("\n")
+        # ~ next_tag_info = self.ga.determine_next_version(self.args.increment, self.current_tag)
         lines = []
         with open(".version", "r") as f:
             lines = f.read()
         print(lines)
         new = [
-            "VERSION=" + next_tag_info[0] if "VERSION" in line else line
+            "VERSION=" + self.next_tag_info[0] if "VERSION" in line else line
             for line in lines.split("\n")
         ]
         with open(".version", "w") as f:
             f.write("\n".join(new))
-        self.msg = f"Bumping {current_tag} to {next_tag_info[1]}\n"
+        self.msg = f"Bumping {self.current_tag} to {self.next_tag_info[1]}\n"
+        print(self.msg, end="")
+
+    def update_cargo(self):
+        self.msg = f"Bumping {self.current_tag} to {self.next_tag_info[1]}\n"
         print(self.msg, end="")
 
     def update_poetry(self):
@@ -105,10 +113,13 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
             self.update_version()
         elif exists("pyproject.toml"):
             self.update_poetry()
+        elif exists("Cargo.toml"):
+            self.update_cargo()
         else:
             raise NoProjectDataFile(
                 "maybe add a .version file with an appname and version"
             )
+        # print(self.msg)
         self.gather_info()
         self.update_files()
 
