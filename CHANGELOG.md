@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - updates versionupdater to include cargo.toml
+- fixes error with rust support add
 
 ## [0.4.7] - 2023-02-28
 ### Added
