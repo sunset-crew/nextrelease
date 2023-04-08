@@ -84,6 +84,16 @@ class CommonFunctions(DefaultValues):
                 config["config"].get("tool.poetry", "name").replace('"', "")
             )
             return config
+
+        if os.path.exists("Cargo.toml"):
+            print("Cargo")
+            config["config"] = configparser.ConfigParser()
+            config["config"].read("Cargo.toml")
+            config["version"] = (
+                config["config"].get("package", "version").replace('"', "")
+            )
+            config["project"] = config["config"].get("package", "name").replace('"', "")
+            return config
         raise MissingProjectConfig("maybe setup an .version")
 
 
@@ -147,28 +157,51 @@ major:
         return "created Makefile"
 
     def gen_std_file_changes(self):
-        return [
-            {
-                "name": "Makefile",
-                "searchStr": "VERSION :=",
-                "formatStr": "VERSION := {0}\n",
-            },
-            {
-                "name": ".version",
-                "searchStr": "VERSION=",
-                "formatStr": "VERSION={0}\n",
-            },
-            {
-                "name": "tests/test_{0}.py".format(self.config["project"]),
-                "searchStr": "    assert __version__",
-                "formatStr": '    assert __version__ == "{0}"\n',
-            },
-            {
-                "name": "{0}/__init__.py".format(self.config["project"]),
-                "searchStr": "__version__ =",
-                "formatStr": '__version__ = "{0}"\n',
-            },
-        ]
+        out = []
+        if os.path.exists("Makefile"):
+            out.append(
+                {
+                    "name": "Makefile",
+                    "searchStr": "VERSION :=",
+                    "formatStr": "VERSION := {0}\n",
+                }
+            )
+        if os.path.exists("Cargo.toml"):
+            out.append(
+                {
+                    "name": "Cargo.toml",
+                    "searchStr": "version =",
+                    "formatStr": """version = "{0}"\n""",
+                }
+            )
+
+        if os.path.exists("tests/test_{0}.py".format(self.config["project"])):
+            out.append(
+                {
+                    "name": "tests/test_{0}.py".format(self.config["project"]),
+                    "searchStr": "VERSION :=",
+                    "formatStr": "VERSION := {0}\n",
+                }
+            )
+
+        if os.path.exists(".version"):
+            out.append(
+                {
+                    "name": ".version",
+                    "searchStr": "VERSION=",
+                    "formatStr": "VERSION={0}\n",
+                }
+            )
+
+        if os.path.exists("{0}/__init__.py".format(self.config["project"])):
+            out.append(
+                {
+                    "name": "{0}/__init__.py".format(self.config["project"]),
+                    "searchStr": "__version__ =",
+                    "formatStr": '__version__ = "{0}"\n',
+                }
+            )
+        return out
 
 
 class GitActions(CommonFunctions):

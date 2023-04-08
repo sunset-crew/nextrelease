@@ -5,9 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.4.8] - 2023-03-10
+## [0.4.8] - 2023-04-08
 ### Added
 - adds custom spacing configuration via config file
+- adds rust repository processing
 
 ## [0.4.7] - 2023-02-28
 ### Added
