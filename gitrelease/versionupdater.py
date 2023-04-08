@@ -60,6 +60,22 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         self.msg = f"Bumping {current_tag} to {next_tag_info[1]}\n"
         print(self.msg, end="")
 
+    def update_cargo(self):
+        current_tag = self.ga.get_current_tag().strip("\n")
+        next_tag_info = self.ga.determine_next_version(self.args.increment, current_tag)
+        lines = []
+        with open(".version", "r") as f:
+            lines = f.read()
+        print(lines)
+        new = [
+            "VERSION=" + next_tag_info[0] if "VERSION" in line else line
+            for line in lines.split("\n")
+        ]
+        with open(".version", "w") as f:
+            f.write("\n".join(new))
+        self.msg = f"Bumping {current_tag} to {next_tag_info[1]}\n"
+        print(self.msg, end="")
+
     def update_poetry(self):
         if "poetry" not in environ.get("PATH") and not which("poetry"):
             raise PoetryNotInPath("Poetry bin is not, you might need to install it")
@@ -105,6 +121,8 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
             self.update_version()
         elif exists("pyproject.toml"):
             self.update_poetry()
+        elif exists("Cargo.toml"):
+            print("Rust App")
         else:
             raise NoProjectDataFile(
                 "maybe add a .version file with an appname and version"

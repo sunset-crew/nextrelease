@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - adds custom spacing configuration via config file
 - adds rust repository processing
 
+### Changed
+- updates versionupdater to include cargo.toml
+
 ## [0.4.7] - 2023-02-28
 ### Added
 - adds trunk_branch env var for different trunk to check release out from
