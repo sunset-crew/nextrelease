@@ -42,9 +42,10 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         self.ga = GitActions(args)
         super().__init__(args)
         self.current_tag = self.ga.get_current_tag().strip("\n")
-        self.next_tag_info = self.ga.determine_next_version(
-            self.args.increment, self.current_tag
-        )
+        if self.args.action != "install":
+            self.next_tag_info = self.ga.determine_next_version(
+                self.args.increment, self.current_tag
+            )
         if not exists(".git"):
             raise GitDirNotFound("You need to be in the root of the git repo")
 
@@ -136,7 +137,7 @@ class ReleaseVersionUpdaterController(ReleaseVersionUpdater):
         subparser.add_parser("install", help="Install Version Updater")
         subparser.add_parser("uninstall", help="Uninstall Version Updater")
         run = subparser.add_parser("run", help="Run an Update, type")
-        run.add_argument("increment", help="patch, minor, major")
+        run.add_argument("increment", help="patch, minor, major", default="patch")
         super().__init__(parser.parse_args())
 
     def __call__(self):
