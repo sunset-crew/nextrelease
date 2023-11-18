@@ -29,6 +29,7 @@ class AfterMerge(object):
         self.ga.create_new_branch(self.branch)
         self.ga.git(["branch", "-D", "release_{0}".format(last_merged_release)])
         if os.path.exists(self.ga.version_update_file):
+            self.args.action = "run"
             pvu = ReleaseVersionUpdater(self.args)
             pvu.run()
         if self.args.no_remote:
