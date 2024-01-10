@@ -85,6 +85,14 @@ class CommonFunctions(DefaultValues):
             )
             return config
 
+        if os.path.exists("package.json"):
+            config["config"] = open("package.json")
+            data = json.load(config["config"])
+            config["version"] = data["version"]
+            config["project"] = data["name"]
+            config["config"].close()
+            return config
+
         if os.path.exists("Cargo.toml"):
             print("Cargo")
             config["config"] = configparser.ConfigParser()
@@ -201,6 +209,16 @@ major:
                     "formatStr": '__version__ = "{0}"\n',
                 }
             )
+
+        # ~ if os.path.exists("package.json"):
+        # ~ out.append(
+        # ~ {
+        # ~ "name": "package.json",
+        # ~ "searchStr": '"version"',
+        # ~ "formatStr": '               "version": "{0}",\n',
+        # ~ }
+        # ~ )
+
         return out
 
 
