@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - changes the gitlab ci script again 1
 - changes the gitlab ci script again 2
 - changes the gitlab ci script again 4
+- changes the gitlab ci script again 5
 
 ## [0.4.10] - 2024-01-10
 ### Added
