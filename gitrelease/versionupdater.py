@@ -69,6 +69,13 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         self.msg = f"Bumping {self.current_tag} to {self.next_tag_info[1]}\n"
         print(self.msg, end="")
 
+    def update_node(self):
+        self.msg = self.ga.run_code(
+            ["npm", "version", self.args.increment, "--no-git-tag-version"]
+        )
+        self.msg += f"Bumping {self.current_tag} to {self.next_tag_info[1]}\n"
+        print(self.msg, end="")
+
     def update_poetry(self):
         if "poetry" not in environ.get("PATH") and not which("poetry"):
             raise PoetryNotInPath("Poetry bin is not, you might need to install it")
@@ -116,6 +123,8 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
             self.update_poetry()
         elif exists("Cargo.toml"):
             self.update_cargo()
+        elif exists("package.json"):
+            self.update_node()
         else:
             raise NoProjectDataFile(
                 "maybe add a .version file with an appname and version"
