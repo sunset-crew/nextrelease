@@ -1,0 +1,25 @@
+stages:
+  - deploy
+
+#~ build-job:       # This job runs in the build stage, which runs first.
+  #~ stage: build
+  #~ script:
+    #~ - echo "Compiling the code..."
+    #~ - echo "Compile complete."
+
+#~ lint-test-job:   # This job also runs in the test stage.
+  #~ stage: test    # It can run at the same time as unit-test-job (in parallel).
+  #~ script:
+    #~ - echo "Linting code... This will take about 10 seconds."
+    #~ - sleep 10
+    #~ - echo "No lint issues found."
+
+deploy-job:
+  stage: deploy
+  image: python:latest
+  environment: production
+  script:
+    - apt-get install -y make
+    - pip install twine poetry
+    - poetry install && make build 
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*

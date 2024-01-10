@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.5.0] - 2024-01-10
+### Added
+- adds gitlab-ci support so we can make these releases public
+- adds public registry for the package
+
+### Changed
+- changes the gitlab ci script
+- changes the gitlab ci script again
+- changes the gitlab ci script again 1
+- changes the gitlab ci script again 2
+- changes the gitlab ci script again 4
+- changes the gitlab ci script again 5
+
 ## [0.4.10] - 2024-01-10
 ### Added
 - adds support for nodejs repos
