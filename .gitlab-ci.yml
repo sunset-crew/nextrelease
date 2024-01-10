@@ -26,4 +26,4 @@ deploy-job:
   only:
     - tags
   except:
-    - branches
+    - main

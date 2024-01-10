@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.5.3] - 2024-01-10
+### Added
+- adds minor update to gitlabci
+
 ## [0.5.2] - 2024-01-10
 ### Changed
 - changes the limitations of the gitlab deploy
