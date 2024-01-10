@@ -12,7 +12,11 @@ You'll need poetry and a few other things installed, like make.::
     make deployuser # -- current user only
     make remove # -- removes from both current user and system
 
+Thanks to Gitlab, we have an alternative method for you::
 
+    pip install gitrelease --index-url https://gitlab.com/api/v4/projects/53741339/packages/pypi/simple
+
+Let me know if you have any trouble.
 
 Usage
 -----
