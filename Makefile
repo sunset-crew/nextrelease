@@ -59,7 +59,8 @@ deployuser: build
 	/usr/bin/pip3 install --user dist/gitrelease-$(VERSION).tar.gz
 
 gitlab:
-	CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout main && git push gitlab && git checkout ${CURRENT}
+	# CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout main && git push gitlab && git checkout ${CURRENT}
+	bash ./deploy/gitlab.sh
 
 deploytest: build
 	python3 -m venv env
