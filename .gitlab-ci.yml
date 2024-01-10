@@ -1,9 +1,9 @@
 stages:
   - deploy
 
-image: python:latest
-
-deploy:
+deploy-job:
+  stage: deploy
+  image: python:latest
   script:
     - apt-get install -y make
     - pip install twine poetry
