@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.5.7] - 2024-02-13
+### Added
+- adds separates to change_verb_list
+
 ## [0.5.6] - 2024-01-10
 ### Added
 - adds the push tags and the tag only running of the deploy

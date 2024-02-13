@@ -30,6 +30,7 @@ change_verb_list = [
     "refactors",
     "restores",
     "returns",
+    "separates",
     "sets",
     "splits",
     "updates",
