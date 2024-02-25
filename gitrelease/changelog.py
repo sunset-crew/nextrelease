@@ -30,6 +30,7 @@ change_verb_list = [
     "refactors",
     "restores",
     "returns",
+    "separates",
     "sets",
     "splits",
     "updates",
@@ -39,7 +40,7 @@ change_verb_list = [
     "wraps",
 ]
 
-remove_verb_list = ["cleans", "r", "removed", "removes", "comments"]
+remove_verb_list = ["cleans", "r", "removed", "removes", "comments", "deprecates"]
 
 
 class ChangeLogActions(object):
