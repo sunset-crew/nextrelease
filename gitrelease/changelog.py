@@ -3,6 +3,8 @@ import sys
 import os
 import subprocess
 
+# 3rd person present
+
 add_verb_list = [
     "a",
     "allows",

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.5.10] - 2024-02-26
 ### Added
 - adds improves to the change_verb_list
+- adds accurate description of the types of words
 
 ## [0.5.9] - 2024-02-25
 ### Added
