@@ -22,6 +22,7 @@ change_verb_list = [
     "edits",
     "fixes",
     "finishes",
+    "improves",
     "moves",
     "prevents",
     "renames",
