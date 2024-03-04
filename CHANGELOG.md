@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.5.10] - 2024-03-04
+### Added
+- adds setuptools for 3.12 compatibility
+
 ## [0.5.9] - 2024-02-25
 ### Added
 - adds release ci job to gitlab-ci.yml
