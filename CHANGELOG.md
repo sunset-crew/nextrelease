@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - adds improves to the change_verb_list
 - adds accurate description of the types of words
+- adds setuptools for 3.12 compatibility
 
 ## [0.5.9] - 2024-02-25
 ### Added

@@ -6,6 +6,7 @@ authors = ["Joe <joe@sunset-crew.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+setuptools = "^69.1.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
