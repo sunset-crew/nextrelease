@@ -4,7 +4,7 @@ ifneq (,$(wildcard /etc/redhat-release))
 else
     GITLIB := /usr/lib/git-core
 endif
-VERSION := 0.5.11
+VERSION := 0.6.0
 USRLIB := /usr/local/bin
 ADDFILES = aftermerge changelog nextrelease versionupdater
 TESTADDFILES = $(addprefix ta-,$(ADDFILES))

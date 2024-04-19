@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-#
-#  Git AfterMerge
-#
-
 import os
 import sys
 from .common import GitActions
@@ -45,7 +40,6 @@ class FakePR(object):
             verbose=True,
         )
         # self.ga.git(["branch", "-D", "{0}".format(self.current)])
-        # self.ga.git(["branch", "-D", "{0}".format(self.current)])
         # $ git checkout main
         # # you need to force the merge commit --no-ff
         # $ git merge --no-ff release_vx.x.x
@@ -61,14 +55,3 @@ class FakePRController(FakePR):
             help="Dont use the remote based commands",
         )
         super().__init__(parser.parse_args())
-
-
-# def git_fakepr():
-#     cmd = FakePRController()
-#     cmd()
-
-
-"""
-[tool.poetry.scripts]
-git-fakepr = "gitrelease.cmds:git_fakepr"
-"""
