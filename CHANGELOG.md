@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.6.0] - 2024-04-18
 ### Removed
 - cleans out the makefile of old not used code
+- cleans out extra code from fakepr
 
 ### Changed
 - updates the readme for newer methods and verb list
