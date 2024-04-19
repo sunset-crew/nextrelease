@@ -2,6 +2,7 @@ from .aftermerge import AfterMergeController
 from .nextrelease import NextReleaseController
 from .changelog import ChangeLogController
 from .versionupdater import ReleaseVersionUpdaterController
+from .fakepr import FakePRController
 
 
 def git_aftermerge():
@@ -16,6 +17,11 @@ def git_nextrelease():
 
 def git_versionupdater():
     cmd = ReleaseVersionUpdaterController()
+    cmd()
+
+
+def git_fakepr():
+    cmd = FakePRController()
     cmd()
 
 

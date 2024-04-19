@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gitrelease"
-version = "0.5.10"
+version = "0.5.11"
 description = "a git release/feature/fix branch management cli"
 authors = ["Joe <joe@sunset-crew.com>"]
 
@@ -21,7 +21,7 @@ git-nextrelease = "gitrelease.cmds:git_nextrelease"
 git-versionupdater = "gitrelease.cmds:git_versionupdater"
 git-changelog = "gitrelease.cmds:git_changelog"
 git-ff = "gitrelease.fixfeature:main"
-
+git-fakepr = "gitrelease.cmds:git_fakepr"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

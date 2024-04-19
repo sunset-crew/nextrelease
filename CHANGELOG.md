@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.5.11] - 2024-04-18
+### Added
+- adds a fakepr command for no remote release merging
+
+### Changed
+- fixes back test for version
+
 ## [0.5.10] - 2024-02-26
 ### Added
 - adds improves to the change_verb_list
