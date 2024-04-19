@@ -1,3 +1,4 @@
+.DEFAULT_GOAL := build
 ifneq (,$(wildcard /etc/redhat-release))
     GITLIB := /usr/libexec/git-core
 else
@@ -9,24 +10,6 @@ ADDFILES = aftermerge changelog nextrelease versionupdater
 TESTADDFILES = $(addprefix ta-,$(ADDFILES))
 REMOVEFILES = $(addprefix rm-,$(ADDFILES))
 CWD=$(shell pwd)
-
-install: $(ADDFILES)
-$(ADDFILES):
-ifneq ($(shell id -u),0)
-		@echo "you need to run this as root and build"
-else
-		@test -f $(USRLIB)/git-$@ && ( echo "aftermerge didn't install correctly, aborting" && exit 1 )
-		@test -f $(GITLIB)/git-$@ || ln -s $(USRLIB)/git-$@ $(GITLIB)/git-$@
-		@echo "git-$@ installed"
-endif
-
-uninstall: $(REMOVEFILES)
-$(REMOVEFILES):
-ifneq ($(shell id -u),0)
-		@echo "you need to run this as root"
-else
-		@test -f "$(GITLIB)/git-$(@:rm-%=%)" && rm -f "$(GITLIB)/git-$(@:rm-%=%)" && echo "git-$(@:rm-%=%) uninstalled" || echo "git-$(@:rm-%=%) not installed"
-endif 
 
 fmt:
 	poetry run black .  || exit 1
@@ -49,14 +32,13 @@ build: test
 	poetry build
 
 deploy: build
-	sudo /usr/bin/pip3 install dist/gitrelease-$(VERSION).tar.gz
+	python3 -m pip install gitrelease --index-url https://gitlab.com/api/v4/projects/53741339/packages/pypi/simple
 
 remove:
-	sudo /usr/bin/pip3 uninstall -y gitrelease
-	/usr/bin/pip3 uninstall -y gitrelease
+	python3 -m pip uninstall -y gitrelease
 
-deployuser: build
-	/usr/bin/pip3 install --user dist/gitrelease-$(VERSION).tar.gz
+deploylocal: build
+	python3 -m pip install --user dist/gitrelease-$(VERSION).tar.gz
 
 gitlab:
 	# CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout main && git push gitlab && git checkout ${CURRENT}
@@ -67,19 +49,6 @@ deploytest: build
 	./env/bin/pip install wheel
 	./env/bin/pip install dist/gitrelease-$(VERSION).tar.gz
 	-echo "source ./env/bin/activate"
-
-
-testinstall: $(TESTADDFILES)
-$(TESTADDFILES):
-ifneq ($(shell id -u),0)
-		@echo "you need to run this as root"
-else
-		@test -f $(GITLIB)/git-$(@:ta-%=%) && echo "$(@:ta-%=%) already installed" || ln -s "$(CWD)/env/bin/git-$(@:ta-%=%)" "$(GITLIB)/git-$(@:ta-%=%)"
-		@echo "git $(@:ta-%=%) installed"
-endif 
-
-#deploy: build
-#	poetry publish -r focus
 
 patch:
 	-git checkout -f
@@ -96,7 +65,3 @@ major:
 clean:
 	-rm -rf dist
 	-rm -rf env
-
-testenv:
-	mkdir ~/etc/systemd/system/
-	mkdir ~/var/run/
