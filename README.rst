@@ -8,9 +8,9 @@ Install
 
 You'll need poetry and a few other things installed, like make.::
 
-    make deploy # -- all users
-    make deployuser # -- current user only
-    make remove # -- removes from both current user and system
+    make deploy       # -- Runs the Command that pulls the package from gitlab
+    make deploylocal  # -- Builds the pkg from source then installs
+    make remove       # -- removes from user
 
 Thanks to Gitlab, we have an alternative method for you::
 
@@ -96,6 +96,11 @@ or do it manually::
     $ git push --force
 
 
+Or try out the fakepr command that automates this::
+
+    $ git fakepr
+
+
 After the merge into master/main
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -161,9 +166,9 @@ Verb Index
 
 Added
 ^^^^^
+allows
 added
 adds
-comments
 installs
 loads
 
@@ -172,12 +177,14 @@ Changed
 ^^^^^^^
 changed
 changes
+uncomments
 configures
 decouples
 deploys
 edits
 fixes
 finishes
+improves
 moves
 prevents
 renames
@@ -186,6 +193,7 @@ replaces
 refactors
 restores
 returns
+separates
 sets
 splits
 updates
@@ -199,4 +207,5 @@ Removed
 removed
 removes
 cleans
-uncomment
+comments
+deprecates

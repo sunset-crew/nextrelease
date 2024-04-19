@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Removed
 - cleans out the makefile of old not used code
 
+### Changed
+- updates the readme for newer methods and verb list
+
 ## [0.5.11] - 2024-04-18
 ### Added
 - adds a fakepr command for no remote release merging
