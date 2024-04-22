@@ -187,8 +187,8 @@ major:
             out.append(
                 {
                     "name": "tests/test_{0}.py".format(self.config["project"]),
-                    "searchStr": "VERSION :=",
-                    "formatStr": "VERSION := {0}\n",
+                    "searchStr": "    assert __version__ ==",
+                    "formatStr": '    assert __version__ == "{0}"\n',
                 }
             )
 

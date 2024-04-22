@@ -5,9 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
-## [0.6.1] - 2024-04-18
+## [0.6.1] - 2024-04-22
 ### Added
 - adds branch add and removal to deploy script for github.
+
+### Changed
+- updates the versionupdater builder to include the correct testing file string
 
 ## [0.6.0] - 2024-04-18
 ### Removed
