@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gitrelease"
-version = "0.6.1"
+version = "0.6.2"
 description = "a git release/feature/fix branch management cli"
 authors = ["Joe <joe@sunset-crew.com>"]
 
