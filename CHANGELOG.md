@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.6.2] - 2024-06-05
+### Added
+- adds pdm style repositories
+
 ## [0.6.1] - 2024-04-22
 ### Added
 - adds branch add and removal to deploy script for github.
