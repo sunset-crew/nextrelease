@@ -36,8 +36,7 @@ class FakePR(object):
                 "--no-ff",
                 self.current,
                 "-m{0}".format(merge_msg),
-            ],
-            verbose=True,
+            ]
         )
         # self.ga.git(["branch", "-D", "{0}".format(self.current)])
         # $ git checkout main

@@ -5,6 +5,7 @@ import re
 import json
 import sys
 import configparser
+from io import StringIO
 from pkg_resources import parse_version
 
 
@@ -52,6 +53,13 @@ class CommonFunctions(DefaultValues):
     def git(self, cmd, **kargs):
         return self.run_code(["git"] + cmd, **kargs)
 
+    def check_for_pdm(self):
+        with open("pyproject.toml") as f:
+            for line in f:
+                if line.strip() == "[project]":
+                    return True
+        return False
+
     def get_user_info(self):
         userhome = os.path.expanduser("~")
         return {"user": os.path.split(userhome)[-1], "userhome": userhome}
@@ -63,6 +71,27 @@ class CommonFunctions(DefaultValues):
                 key, value = line.split("=")
                 print(key, value)
                 os.environ[key] = value
+
+    def get_pdm_info(self):
+        out = ""
+        start = False
+        cnt = 0
+        limit = 3
+        with open("pyproject.toml") as f:
+            for line in f:
+                if cnt > limit:
+                    break
+                if line.strip() == "[project]":
+                    start = True
+                if start:
+                    out += line
+                    cnt += 1
+        buf = StringIO(out)
+        config = configparser.ConfigParser()
+        config.read_file(buf)
+        version = config["project"]["version"]
+        name = config["project"]["name"]
+        return version, name
 
     def get_project_info(self):
         config = {}
@@ -76,6 +105,10 @@ class CommonFunctions(DefaultValues):
 
         if os.path.exists("pyproject.toml"):
             config["config"] = configparser.ConfigParser()
+            if self.check_for_pdm():
+                config["version"], config["project"] = self.get_pdm_info()
+                return config
+            print(self.check_for_pdm())
             config["config"].read("pyproject.toml")
             config["version"] = (
                 config["config"].get("tool.poetry", "version").replace('"', "")

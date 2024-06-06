@@ -37,6 +37,10 @@ class PoetryNotInPath(Exception):
     pass
 
 
+class PdmNotInPath(Exception):
+    pass
+
+
 class ReleaseVersionUpdater(VersionUpdaterActions):
     def __init__(self, args):
         self.ga = GitActions(args)
@@ -82,6 +86,15 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         self.msg = self.ga.run_code(["poetry", "version", self.args.increment])
         print(self.msg, end="")
 
+    def update_pdm(self):
+        if "pdm" not in environ.get("PATH") and not which("pdm"):
+            raise PdmNotInPath("pdm bin is not you might need to install it")
+        increment = self.args.increment
+        if self.args.increment == "patch":
+            increment = "micro"
+        self.msg = self.ga.run_code(["pdm", "bump", increment])
+        print(self.msg, end="")
+
     def gather_info(self):
         self.config = self.ga.get_project_info()
         self.file_changes = {}
@@ -120,7 +133,10 @@ class ReleaseVersionUpdater(VersionUpdaterActions):
         if exists(".version"):
             self.update_version()
         elif exists("pyproject.toml"):
-            self.update_poetry()
+            if self.ga.check_for_pdm():
+                self.update_pdm()
+            else:
+                self.update_poetry()
         elif exists("Cargo.toml"):
             self.update_cargo()
         elif exists("package.json"):
