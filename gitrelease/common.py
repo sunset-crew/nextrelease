@@ -13,6 +13,14 @@ class MissingProjectConfig(Exception):
     pass
 
 
+class MissingMergeCommit(Exception):
+    pass
+
+
+class MissingCommitLog(Exception):
+    pass
+
+
 class DefaultValues(object):
     version_update_file = "version_updater.json"
     project = "default"
@@ -290,9 +298,14 @@ class GitActions(CommonFunctions):
         branch = ""
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
+        if not lines:
+            raise MissingCommitLog("nothing in the git log")
         looping = True
         while looping:
-            line = lines.pop(0)
+            try:
+                line = lines.pop(0)
+            except IndexError:
+                raise MissingMergeCommit("enable 'Allow merge commits'")
             if line[:10] in ["Merge pull"]:
                 try:
                     # github
