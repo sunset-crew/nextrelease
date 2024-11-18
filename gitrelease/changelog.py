@@ -98,10 +98,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
         if current_release[:7] == "release":
             return current_release
         branches = self.run_cmd(["git", "branch", "--all"]).split("\n")
+        release_branch_cnt = 0
+        local_branch = ""
         for branch in branches:
             if "remotes" in branch and "release" in branch:
                 return branch.split("/")[-1].strip()
-        raise Exception("No Remotes Found")
+            if "release" in branch:
+                release_branch_cnt += 1
+                print(local_branch)
+                local_branch = branch
+        if release_branch_cnt > 1:
+            raise Exception("too many local release branches found")
+        if local_branch:
+            return local_branch
+        raise Exception("No Release Branches Found")
 
     def find_last_version_entry(self):
         for line in self.f:

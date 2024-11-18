@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Also based on](https://github.com/conventional-changelog/standard-version/blob/master/CHANGELOG.md) so decending.
 
+## [0.6.3] - 2024-11-17
+### Added
+- adds missingmergecommit and missingcommitlog exceptions
+
+### Changed
+- fixes issue with non release branch and no remote
+
 ## [0.6.2] - 2024-06-05
 ### Added
 - adds pdm style repositories

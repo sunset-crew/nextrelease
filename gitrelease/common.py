@@ -13,6 +13,14 @@ class MissingProjectConfig(Exception):
     pass
 
 
+class MissingMergeCommit(Exception):
+    pass
+
+
+class MissingCommitLog(Exception):
+    pass
+
+
 class DefaultValues(object):
     version_update_file = "version_updater.json"
     project = "default"
@@ -172,8 +180,15 @@ class VersionUpdaterActions(CommonFunctions):
         print("not the root of the repository")
 
     def basic_makefile(self):
-        contents = """VERSION := {0}
+        if os.path.exists("Makefile"):
+            return "Already exists"
 
+        restore_content = '''
+TODAY = $(shell date +%Y%m%d)
+RESTORE_DATE = ${TODAY}
+'''
+        contents = """VERSION := {0}
+{2}
 clean:
 {1}-rm -rf dist
 {1}-rm -rf env
@@ -188,11 +203,8 @@ major:
 {1}git aftermerge major || exit 1
 
 """.format(
-            self.config["version"], "	"
+            self.config["version"], "	", restore_content
         )
-        if os.path.exists("Makefile"):
-            return "Already exists"
-
         with open("Makefile", "w") as f:
             f.write(contents)
         return "created Makefile"
@@ -290,9 +302,14 @@ class GitActions(CommonFunctions):
         branch = ""
         o = self.git(["log"]).strip()
         lines = [x.strip() for x in o.split("\n") if x.strip()]
+        if not lines:
+            raise MissingCommitLog("nothing in the git log")
         looping = True
         while looping:
-            line = lines.pop(0)
+            try:
+                line = lines.pop(0)
+            except IndexError:
+                raise MissingMergeCommit("enable 'Allow merge commits'")
             if line[:10] in ["Merge pull"]:
                 try:
                     # github
