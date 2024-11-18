@@ -180,8 +180,15 @@ class VersionUpdaterActions(CommonFunctions):
         print("not the root of the repository")
 
     def basic_makefile(self):
-        contents = """VERSION := {0}
+        if os.path.exists("Makefile"):
+            return "Already exists"
 
+        restore_content = '''
+TODAY = $(shell date +%Y%m%d)
+RESTORE_DATE = ${TODAY}
+'''
+        contents = """VERSION := {0}
+{2}
 clean:
 {1}-rm -rf dist
 {1}-rm -rf env
@@ -196,11 +203,8 @@ major:
 {1}git aftermerge major || exit 1
 
 """.format(
-            self.config["version"], "	"
+            self.config["version"], "	", restore_content
         )
-        if os.path.exists("Makefile"):
-            return "Already exists"
-
         with open("Makefile", "w") as f:
             f.write(contents)
         return "created Makefile"
